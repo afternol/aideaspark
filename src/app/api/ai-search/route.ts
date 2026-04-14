@@ -2,12 +2,23 @@ import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { prisma } from "@/lib/prisma";
 import { serializeIdea } from "@/lib/api-helpers";
+import { checkAiRateLimit, recordAiUsage } from "@/lib/ai-rate-limit";
 
 export async function POST(request: Request) {
   try {
-    const { query } = await request.json();
+    const { query, sessionId } = await request.json();
     if (!query?.trim()) {
       return NextResponse.json({ results: [], interpretation: "" });
+    }
+
+    // レート制限チェック
+    const identifier = sessionId || request.headers.get("x-forwarded-for") || "anonymous";
+    const { allowed, remaining, resetIn } = await checkAiRateLimit(identifier, "ai-search");
+    if (!allowed) {
+      return NextResponse.json(
+        { error: `AI検索の利用上限に達しました。${resetIn}にリセットされます。`, results: [], interpretation: "" },
+        { status: 429 }
+      );
     }
 
     // Get all ideas for context
@@ -65,9 +76,11 @@ ${ideaSummary}
       ],
     });
 
+    // 使用記録
+    await recordAiUsage(identifier, "ai-search");
+
     const text = message.content[0].type === "text" ? message.content[0].text : "";
 
-    // Parse AI response
     let parsed: { interpretation: string; ids: string[]; reason: string };
     try {
       const jsonMatch = text.match(/\{[\s\S]*\}/);
@@ -76,12 +89,10 @@ ${ideaSummary}
       parsed = { interpretation: "検索結果を解析できませんでした", ids: [], reason: "" };
     }
 
-    // Fetch matched ideas
     const matchedIdeas = parsed.ids.length > 0
       ? await prisma.idea.findMany({ where: { id: { in: parsed.ids } } })
       : [];
 
-    // Preserve AI's ordering
     const orderedResults = parsed.ids
       .map((id) => matchedIdeas.find((i) => i.id === id))
       .filter(Boolean)
@@ -91,6 +102,7 @@ ${ideaSummary}
       results: orderedResults,
       interpretation: parsed.interpretation,
       reason: parsed.reason,
+      remaining,
     });
   } catch (error: any) {
     console.error("AI search error:", error);

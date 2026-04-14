@@ -30,9 +30,9 @@ export async function GET(
       if (s.category === idea.category) score += 3;
       if (s.targetIndustry === idea.targetIndustry) score += 2;
       if (s.targetCustomer === idea.targetCustomer) score += 2;
-      // Tag overlap
-      const tags = JSON.parse(idea.tags) as string[];
-      const sTags = JSON.parse(s.tags) as string[];
+      // Tag overlap (Json型: すでに配列)
+      const tags = (Array.isArray(idea.tags) ? idea.tags : []) as string[];
+      const sTags = (Array.isArray(s.tags) ? s.tags : []) as string[];
       const overlap = tags.filter((t) => sTags.includes(t)).length;
       score += overlap;
       return { idea: s, score };

@@ -20,6 +20,11 @@ model User {
   profilePublic   Boolean   @default(true)
   accounts        Account[]
   sessions        Session[]
+  comments        Comment[]
+  reactions       Reaction[]
+  declarations    Declaration[]
+  viewHistories   ViewHistory[]
+  notifications   Notification[]
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
@@ -70,15 +75,15 @@ model Idea {
   revenueModel     String
   competitors      String
   competitiveEdge  String
-  tags             String   // JSON array as string
+  tags             Json     // array
   category         String
   targetIndustry   String
   targetCustomer   String    @default("")
   investmentScale  String
   difficulty       String
-  scores           String   // JSON object as string
-  scoreComments    String   // JSON object as string
-  trendKeywords    String   // JSON array as string
+  scores           Json     // object
+  scoreComments    Json     // object
+  trendKeywords    Json     // array
   oneLiner         String
   publishedAt      String
   views            Int      @default(0)
@@ -97,10 +102,12 @@ model Reaction {
   id        String   @id @default(cuid())
   ideaId    String
   sessionId String
+  userId    String?  // authenticated user (null for anonymous)
   type      String
   createdAt DateTime @default(now())
 
   idea      Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@unique([ideaId, sessionId, type])
 }
@@ -109,12 +116,15 @@ model Comment {
   id        String    @id @default(cuid())
   ideaId    String
   sessionId String
+  userId    String?   // authenticated user (null for anonymous)
   nickname  String    @default("匿名")
   body      String
   parentId  String?
+  deletedAt DateTime? // soft delete
   createdAt DateTime  @default(now())
 
   idea      Idea      @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   parent    Comment?  @relation("CommentThread", fields: [parentId], references: [id])
   replies   Comment[] @relation("CommentThread")
 }
@@ -123,10 +133,12 @@ model Declaration {
   id        String   @id @default(cuid())
   ideaId    String
   sessionId String
+  userId    String?  // authenticated user (null for anonymous)
   message   String?
   createdAt DateTime @default(now())
 
   idea      Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@unique([ideaId, sessionId])
 }
@@ -168,6 +180,8 @@ model ViewHistory {
   ideaId    String
   viewedAt  DateTime @default(now())
 
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([userId, ideaId])
   @@index([userId, viewedAt])
 }
@@ -181,15 +195,17 @@ model Notification {
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
 
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId, read])
 }
 
 model CustomIdea {
   id            String   @id @default(cuid())
-  userId        String
+  userId        String   // stores sessionId or userId
   baseIdeaId    String
-  conditions    String   // JSON: budget, teamSize, skills, timeline
-  result        String   // JSON: customized idea data
+  conditions    Json     // budget, teamSize, skills, timeline
+  result        Json     // customized idea data
   createdAt     DateTime @default(now())
 
   @@index([userId])
@@ -197,10 +213,10 @@ model CustomIdea {
 
 model BusinessPlan {
   id            String   @id @default(cuid())
-  userId        String
-  ideaId        String?       // original idea
-  customIdeaId  String?       // or customized idea
-  content       String   // JSON: full plan content
+  userId        String   // stores sessionId or userId
+  ideaId        String?
+  customIdeaId  String?
+  content       Json     // full plan content
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -212,7 +228,7 @@ model TrendCache {
   keyword       String   @unique
   category      String
   description   String
-  relatedIdeaIds String  // JSON array
+  relatedIdeaIds Json    // array
   gtInterest    Float    @default(0)
   gtMomentum    Float    @default(0)
   platformScore Float    @default(0)
@@ -221,4 +237,13 @@ model TrendCache {
   fetchedAt     DateTime @default(now())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model AiUsageLog {
+  id         String   @id @default(cuid())
+  identifier String   // sessionId or userId
+  endpoint   String   // ai-search | ai-customize | ai-bizplan
+  createdAt  DateTime @default(now())
+
+  @@index([identifier, endpoint, createdAt])
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 
 export async function POST(
   request: Request,
@@ -12,6 +13,9 @@ export async function POST(
     return NextResponse.json({ error: "sessionId and type required" }, { status: 400 });
   }
 
+  const session = await auth();
+  const userId = session?.user?.id ?? null;
+
   // Toggle: if exists delete, otherwise create
   const existing = await prisma.reaction.findUnique({
     where: { ideaId_sessionId_type: { ideaId: id, sessionId, type } },
@@ -22,7 +26,7 @@ export async function POST(
     return NextResponse.json({ toggled: false });
   } else {
     await prisma.reaction.create({
-      data: { ideaId: id, sessionId, type },
+      data: { ideaId: id, sessionId, userId, type },
     });
     return NextResponse.json({ toggled: true });
   }

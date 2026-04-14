@@ -26,15 +26,15 @@ async function main() {
       revenueModel:     idea.revenueModel,
       competitors:      idea.competitors,
       competitiveEdge:  idea.competitiveEdge,
-      tags:             JSON.stringify(idea.tags),
+      tags:             idea.tags,           // Json型: 配列をそのまま
       category:         idea.category,
       targetIndustry:   idea.targetIndustry,
       targetCustomer:   idea.targetCustomer,
       investmentScale:  idea.investmentScale,
       difficulty:       idea.difficulty,
-      scores:           JSON.stringify(idea.scores),
-      scoreComments:    JSON.stringify(idea.scoreComments),
-      trendKeywords:    JSON.stringify(idea.trendKeywords),
+      scores:           idea.scores as any,         // Json型: オブジェクトをそのまま
+      scoreComments:    idea.scoreComments as any,  // Json型: オブジェクトをそのまま
+      trendKeywords:    idea.trendKeywords as any,  // Json型: 配列をそのまま
       oneLiner:         idea.oneLiner,
       publishedAt:      idea.publishedAt,
       views:            idea.views,
@@ -58,7 +58,7 @@ async function main() {
       keyword:        trend.keyword,
       category:       trend.category,
       description:    trend.description,
-      relatedIdeaIds: JSON.stringify(trend.relatedIdeaIds),
+      relatedIdeaIds: trend.relatedIdeaIds,  // Json型: 配列をそのまま
       platformScore:  trend.score,
       totalScore:     trend.score,
       momentum:       trend.momentum,

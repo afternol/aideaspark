@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { prisma } from "@/lib/prisma";
 import { serializeIdea } from "@/lib/api-helpers";
+import { checkAiRateLimit, recordAiUsage } from "@/lib/ai-rate-limit";
 
 function extractJSON(text: string): any {
   let cleaned = text.replace(/```(?:json)?\s*/g, "").replace(/```\s*/g, "").trim();
@@ -26,23 +27,30 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "conditions required" }, { status: 400 });
     }
 
+    // レート制限チェック
+    const { allowed, remaining, resetIn } = await checkAiRateLimit(sessionId, "ai-customize");
+    if (!allowed) {
+      return NextResponse.json(
+        { error: `カスタマイズの利用上限（24時間10回）に達しました。${resetIn}にリセットされます。` },
+        { status: 429 }
+      );
+    }
+
     let sourceData: any;
     let baseIdeaId: string;
     let baseInfo: { serviceName: string; slug: string };
 
     if (customIdeaId) {
-      // Customize from a previous customization result
       const custom = await prisma.customIdea.findUnique({ where: { id: customIdeaId } });
       if (!custom) return NextResponse.json({ error: "Custom idea not found" }, { status: 404 });
-      sourceData = JSON.parse(custom.result);
+      // conditions/result は Json 型 → すでにオブジェクト
+      sourceData = custom.result as any;
       baseIdeaId = custom.baseIdeaId;
-      // Get original idea info for the link
       const originalIdea = await prisma.idea.findUnique({ where: { id: custom.baseIdeaId } });
       baseInfo = originalIdea
         ? { serviceName: originalIdea.serviceName, slug: originalIdea.slug }
-        : { serviceName: sourceData.serviceName, slug: "" };
+        : { serviceName: (sourceData as any).serviceName, slug: "" };
     } else if (ideaId) {
-      // Customize from an original idea
       const idea = await prisma.idea.findUnique({ where: { id: ideaId } });
       if (!idea) return NextResponse.json({ error: "Idea not found" }, { status: 404 });
       const s = serializeIdea(idea);
@@ -108,13 +116,16 @@ ${conditions.notes || "特になし"}
       return NextResponse.json({ error: "AI応答の解析に失敗しました。再度お試しください。" }, { status: 500 });
     }
 
-    // Save to DB (always link back to the original idea)
+    // 使用記録
+    await recordAiUsage(sessionId, "ai-customize");
+
+    // Save to DB (Json 型なのでオブジェクトをそのまま渡す)
     const customIdea = await prisma.customIdea.create({
       data: {
         userId: sessionId,
         baseIdeaId: baseIdeaId,
-        conditions: JSON.stringify(conditions),
-        result: JSON.stringify(result),
+        conditions: conditions,
+        result: result,
       },
     });
 
@@ -122,6 +133,7 @@ ${conditions.notes || "特になし"}
       id: customIdea.id,
       baseIdea: baseInfo,
       ...result,
+      remaining,
     });
   } catch (error: any) {
     console.error("AI customize error:", error?.message, error?.status, error?.error);

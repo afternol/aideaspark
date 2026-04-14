@@ -18,7 +18,6 @@ export async function GET(request: Request) {
       orderBy: { createdAt: "desc" },
     });
 
-    // Collect all referenced idea IDs
     const allIdeaIds = new Set<string>();
     customIdeas.forEach((c) => allIdeaIds.add(c.baseIdeaId));
     plans.forEach((p) => { if (p.ideaId) allIdeaIds.add(p.ideaId); });
@@ -28,25 +27,27 @@ export async function GET(request: Request) {
     });
     const ideaMap = new Map(ideas.map((i) => [i.id, serializeIdea(i)]));
 
-    // Build a map: customIdeaId -> baseIdeaId
     const customBaseMap = new Map(customIdeas.map((c) => [c.id, c.baseIdeaId]));
 
     const enrichedCustom = customIdeas.map((c) => {
       const base = ideaMap.get(c.baseIdeaId);
+      // conditions/result は Json 型 → すでにオブジェクト
+      const conditions = c.conditions as any;
+      const result = c.result as any;
       return {
         id: c.id,
         baseIdeaId: c.baseIdeaId,
         baseIdea: base ? { id: base.id, slug: base.slug, serviceName: base.serviceName } : null,
-        conditions: JSON.parse(c.conditions),
-        result: JSON.parse(c.result),
+        conditions,
+        result,
         hasPlan: plans.some((p) => p.customIdeaId === c.id),
         createdAt: c.createdAt,
       };
     });
 
     const enrichedPlans = plans.map((p) => {
-      const content = JSON.parse(p.content);
-      // Resolve baseIdeaId: direct ideaId or via customIdeaId
+      // content は Json 型 → すでにオブジェクト
+      const content = p.content as any;
       let baseIdeaId = p.ideaId || "";
       if (!baseIdeaId && p.customIdeaId) {
         baseIdeaId = customBaseMap.get(p.customIdeaId) || "";

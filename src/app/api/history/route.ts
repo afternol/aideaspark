@@ -36,11 +36,24 @@ export async function POST(request: Request) {
     const { ideaId } = await request.json();
     if (!ideaId) return NextResponse.json({ error: "ideaId required" }, { status: 400 });
 
+    // isNew: true = first view (not an update)
+    const existing = await prisma.viewHistory.findUnique({
+      where: { userId_ideaId: { userId: session.user.id, ideaId } },
+    });
+
     await prisma.viewHistory.upsert({
       where: { userId_ideaId: { userId: session.user.id, ideaId } },
       update: { viewedAt: new Date() },
       create: { userId: session.user.id, ideaId },
     });
+
+    // 初回閲覧のみ views をインクリメント
+    if (!existing) {
+      await prisma.idea.update({
+        where: { id: ideaId },
+        data: { views: { increment: 1 } },
+      });
+    }
 
     return NextResponse.json({ ok: true });
   } catch (error: any) {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 
 export async function GET(
   request: Request,
@@ -45,8 +46,11 @@ export async function POST(
     return NextResponse.json({ error: "Already declared" }, { status: 409 });
   }
 
+  const session = await auth();
+  const userId = session?.user?.id ?? null;
+
   const declaration = await prisma.declaration.create({
-    data: { ideaId: id, sessionId, message: message?.trim() || null },
+    data: { ideaId: id, sessionId, userId, message: message?.trim() || null },
   });
 
   return NextResponse.json(declaration, { status: 201 });
