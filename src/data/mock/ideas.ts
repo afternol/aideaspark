@@ -33,6 +33,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-31",
     views: 1240,
     bookmarks: 89,
+    patterns: ['B-1', 'F-1'],
   },
   {
     id: "idea-002",
@@ -66,6 +67,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-30",
     views: 980,
     bookmarks: 72,
+    patterns: ['A-2', 'F-1'],
   },
   {
     id: "idea-003",
@@ -99,6 +101,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-29",
     views: 2100,
     bookmarks: 156,
+    patterns: ['A-3', 'B-5'],
   },
   {
     id: "idea-004",
@@ -132,6 +135,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-28",
     views: 760,
     bookmarks: 45,
+    patterns: ['H-1', 'C-2'],
   },
   {
     id: "idea-005",
@@ -165,6 +169,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-27",
     views: 1580,
     bookmarks: 112,
+    patterns: ['F-1', 'D-1'],
   },
   {
     id: "idea-006",
@@ -198,6 +203,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-26",
     views: 650,
     bookmarks: 38,
+    patterns: ['B-2', 'G-2'],
   },
   {
     id: "idea-007",
@@ -231,6 +237,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-25",
     views: 1890,
     bookmarks: 134,
+    patterns: ['B-3', 'B-5'],
   },
   {
     id: "idea-008",
@@ -246,7 +253,7 @@ export const mockIdeas: BusinessIdea[] = [
     competitiveEdge: "スマートロック連携による完全無人運用。企業間取引に特化したUI/UX。",
     tags: ["シェアリング", "不動産テック", "スマートロック"],
     category: "不動産",
-    targetIndustry: "不動産・建設",
+    targetIndustry: "不動産・住宅",
     targetCustomer: "スタートアップ",
     investmentScale: "200〜500万円",
     difficulty: "中",
@@ -264,6 +271,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-24",
     views: 520,
     bookmarks: 28,
+    patterns: ['A-6', 'E-5'],
   },
   {
     id: "idea-009",
@@ -297,6 +305,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-23",
     views: 1350,
     bookmarks: 98,
+    patterns: ['I-6', 'F-2'],
   },
   {
     id: "idea-010",
@@ -330,6 +339,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-22",
     views: 1120,
     bookmarks: 76,
+    patterns: ['F-2', 'C-4'],
   },
   {
     id: "idea-011",
@@ -363,6 +373,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-21",
     views: 890,
     bookmarks: 54,
+    patterns: ['C-5', 'G-2'],
   },
   {
     id: "idea-012",
@@ -396,6 +407,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-20",
     views: 2340,
     bookmarks: 167,
+    patterns: ['B-3', 'I-3'],
   },
   {
     id: "idea-013",
@@ -429,6 +441,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-19",
     views: 670,
     bookmarks: 41,
+    patterns: ['E-8', 'A-7'],
   },
   {
     id: "idea-014",
@@ -444,7 +457,7 @@ export const mockIdeas: BusinessIdea[] = [
     competitiveEdge: "「自分の声のクローン」に特化。日本語の感情表現に強い独自モデル。クリエイターの時間を10分の1に。",
     tags: ["AI音声", "クリエイターエコノミー", "コンテンツ制作"],
     category: "AI/ML",
-    targetIndustry: "エンタメ・メディア",
+    targetIndustry: "メディア・出版",
     targetCustomer: "フリーランス・副業",
     investmentScale: "500万円〜",
     difficulty: "高",
@@ -462,6 +475,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-18",
     views: 1670,
     bookmarks: 123,
+    patterns: ['A-8', 'F-9'],
   },
   {
     id: "idea-015",
@@ -495,6 +509,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-17",
     views: 1980,
     bookmarks: 145,
+    patterns: ['B-2', 'B-4'],
   },
   {
     id: "idea-016",
@@ -528,6 +543,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-16",
     views: 780,
     bookmarks: 52,
+    patterns: ['F-5', 'C-7'],
   },
   {
     id: "idea-017",
@@ -561,6 +577,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-15",
     views: 3200,
     bookmarks: 234,
+    patterns: ['G-3', 'E-3'],
   },
   {
     id: "idea-018",
@@ -594,6 +611,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-14",
     views: 560,
     bookmarks: 34,
+    patterns: ['F-5', 'A-7'],
   },
   {
     id: "idea-019",
@@ -627,6 +645,7 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-13",
     views: 1450,
     bookmarks: 108,
+    patterns: ['I-4', 'B-1'],
   },
   {
     id: "idea-020",
@@ -660,5 +679,6 @@ export const mockIdeas: BusinessIdea[] = [
     publishedAt: "2026-03-12",
     views: 430,
     bookmarks: 22,
+    patterns: ['G-3', 'D-2'],
   },
 ];

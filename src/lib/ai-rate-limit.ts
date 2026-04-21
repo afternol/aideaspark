@@ -4,6 +4,7 @@ const LIMITS: Record<string, { maxCount: number; windowHours: number }> = {
   "ai-search":    { maxCount: 20, windowHours: 1 },
   "ai-customize": { maxCount: 10, windowHours: 24 },
   "ai-bizplan":   { maxCount: 5,  windowHours: 24 },
+  "ai-generate":  { maxCount: 3,  windowHours: 24 },
 };
 
 export async function checkAiRateLimit(

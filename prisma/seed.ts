@@ -40,6 +40,7 @@ async function main() {
       views:            idea.views,
       bookmarks:        idea.bookmarks,
       inspirationSource: idea.inspirationSource ?? null,
+      patterns:         (idea.patterns ?? []) as any,
     };
 
     await prisma.idea.upsert({

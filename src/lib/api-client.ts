@@ -3,8 +3,10 @@
 import { getSessionId } from "./session";
 import type { IdeaWithEngagement, IdeaComment } from "./types";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`/api${path}`, {
+  const res = await fetch(`${BASE_PATH}/api${path}`, {
     headers: { "Content-Type": "application/json" },
     ...options,
   });

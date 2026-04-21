@@ -88,11 +88,16 @@ model Idea {
   publishedAt      String
   views            Int      @default(0)
   bookmarks        Int      @default(0)
-  inspirationSource String?
+  inspirationSource  String?
+  patterns           Json     @default("[]") // array of pattern IDs e.g. ["A-1", "B-3"]
+  whyNow             String?  // なぜ今このビジネスか（タイミング根拠）
+  noveltyNote        String?  // 新規性の説明（どの次元で新しいか）
+  patternRationale   String?  // パターン複合の説明（なぜこの組み合わせか）
 
   reactions        Reaction[]
   comments         Comment[]
   declarations     Declaration[]
+  ratings          IdeaRating[]
 
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -242,8 +247,41 @@ model TrendCache {
 model AiUsageLog {
   id         String   @id @default(cuid())
   identifier String   // sessionId or userId
-  endpoint   String   // ai-search | ai-customize | ai-bizplan
+  endpoint   String   // ai-search | ai-customize | ai-bizplan | ai-generate
   createdAt  DateTime @default(now())
 
   @@index([identifier, endpoint, createdAt])
+}
+
+// 生成ログ: どのシグナル×パターン → どんなアイデアが生まれたか
+model GenerationLog {
+  id             String   @id @default(cuid())
+  sessionId      String
+  theme          String                    // 生成テーマ
+  hint           String?                   // 追加ヒント
+  patterns       Json     @default("[]")  // 使用パターンID配列
+  newsSourceUrls Json     @default("[]")  // 参照ニュースURL配列
+  ideaId         String?                  // 保存されたアイデアID（nullable）
+  userRating     Int?                     // ユーザー評価 1-5（後から記録）
+  createdAt      DateTime @default(now())
+
+  @@index([sessionId, createdAt])
+  @@index([ideaId])
+}
+
+// アイデア品質の明示評価（リアクションとは別軸）
+model IdeaRating {
+  id         String   @id @default(cuid())
+  ideaId     String
+  sessionId  String
+  isNovel    Boolean? // 新規性が高い
+  isTimely   Boolean? // タイミングが良い
+  isFeasible Boolean? // 実現しやすそう
+  isExisting Boolean? // 既にある気がする
+  createdAt  DateTime @default(now())
+
+  idea       Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+
+  @@unique([ideaId, sessionId])
+  @@index([ideaId])
 }

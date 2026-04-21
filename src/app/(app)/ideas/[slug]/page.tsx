@@ -15,6 +15,8 @@ import {
   FileText,
   Wand2,
   Loader2,
+  Sparkles,
+  Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import type { IdeaScore, IdeaWithEngagement, ReactionType } from "@/lib/types";
+import { getPatternById } from "@/lib/patterns";
 import { SCORE_LABELS, SCORE_VIEWPOINTS } from "@/lib/types";
 import { ScoreBar } from "@/components/ideas/score-bar";
 import { IdeaRadarChart } from "@/components/ideas/idea-radar-chart";
@@ -32,6 +35,7 @@ import { AddToCollection } from "@/components/engagement/add-to-collection";
 import { GlossaryText } from "@/components/shared/glossary-text";
 import { CustomizePanel } from "@/components/ai/customize-panel";
 import { BizPlanPanel } from "@/components/ai/bizplan-panel";
+import { IdeaRating } from "@/components/engagement/idea-rating";
 import { api } from "@/lib/api-client";
 
 const avgScore = (scores: IdeaScore) => {
@@ -151,6 +155,19 @@ export default function IdeaDetailPage({ params }: { params: Promise<{ slug: str
         {idea.tags.map((tag) => (
           <Badge key={tag} variant="outline" className="text-[11px] text-muted-foreground">#{tag}</Badge>
         ))}
+        {idea.patterns && idea.patterns.length > 0 && idea.patterns.map((pid) => {
+          const p = getPatternById(pid);
+          return (
+            <Badge
+              key={pid}
+              variant="outline"
+              className="text-[11px] border-violet-300 bg-violet-50 text-violet-700 dark:border-violet-700 dark:bg-violet-950/40 dark:text-violet-300"
+              title={p?.name}
+            >
+              🧩 {pid}{p ? ` ${p.name}` : ""}
+            </Badge>
+          );
+        })}
       </div>
 
       {/* Reactions */}
@@ -159,6 +176,9 @@ export default function IdeaDetailPage({ params }: { params: Promise<{ slug: str
         counts={idea.reactionCounts || {}}
         userReactions={idea.userReactions || []}
       />
+
+      {/* Quality Rating */}
+      <IdeaRating ideaId={idea.id} />
 
       {/* Body */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
@@ -178,6 +198,12 @@ export default function IdeaDetailPage({ params }: { params: Promise<{ slug: str
 
         <div className="space-y-3 lg:col-span-3">
           <DetailBox icon={<Lightbulb className="size-4" />} label="コンセプト・提供価値">{idea.concept}</DetailBox>
+          {idea.whyNow && (
+            <DetailBox icon={<Clock className="size-4" />} label="なぜ今か">{idea.whyNow}</DetailBox>
+          )}
+          {idea.noveltyNote && (
+            <DetailBox icon={<Sparkles className="size-4" />} label="新規性">{idea.noveltyNote}</DetailBox>
+          )}
           <DetailBox icon={<Target className="size-4" />} label="ターゲット">{idea.target}</DetailBox>
           <DetailBox icon={<Zap className="size-4" />} label="解決する課題">{idea.problem}</DetailBox>
           <DetailBox icon={<Puzzle className="size-4" />} label="プロダクト・サービス内容"><BulletList text={idea.product} /></DetailBox>

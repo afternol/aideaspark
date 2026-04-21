@@ -9,5 +9,6 @@ export function serializeIdea(row: any): BusinessIdea {
     scores: typeof rest.scores === "string" ? JSON.parse(rest.scores) : rest.scores,
     scoreComments: typeof rest.scoreComments === "string" ? JSON.parse(rest.scoreComments) : rest.scoreComments,
     trendKeywords: typeof rest.trendKeywords === "string" ? JSON.parse(rest.trendKeywords) : rest.trendKeywords,
+    patterns:      typeof rest.patterns === "string" ? JSON.parse(rest.patterns) : (rest.patterns ?? []),
   };
 }

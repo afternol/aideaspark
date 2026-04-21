@@ -52,6 +52,10 @@ export interface BusinessIdea {
   bookmarks: number;
   oneLiner: string;
   inspirationSource?: string;
+  patterns?: string[];
+  whyNow?: string;
+  noveltyNote?: string;
+  patternRationale?: string;
 }
 
 export interface TrendItem {
