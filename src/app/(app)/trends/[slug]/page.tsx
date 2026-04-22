@@ -6,11 +6,38 @@ import { use } from "react";
 import {
   ArrowLeft, ArrowUpRight, ArrowRight, ArrowDownRight,
   Loader2, Newspaper, Building2, TrendingUp, Globe,
-  Lightbulb, Clock, ExternalLink,
+  Clock, BookOpen, CalendarDays, DollarSign, Rocket,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { TrendReportData } from "@/lib/trend-slugs";
+import type { TrendReportData, TrendSource } from "@/lib/trend-slugs";
+
+function CitedText({ text, sources }: { text: string; sources: TrendSource[] }) {
+  const parts = text.split(/(\[\d+\])/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        const m = part.match(/^\[(\d+)\]$/);
+        if (m) {
+          const n = Number(m[1]);
+          const src = sources.find((s) => s.num === n);
+          return (
+            <sup key={i}>
+              <a
+                href={`#ref-${n}`}
+                className="mx-0.5 font-bold text-primary hover:underline"
+                title={src ? `${src.publisher} — ${src.title}` : undefined}
+              >
+                {n}
+              </a>
+            </sup>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+}
 
 interface TrendDetail {
   keyword: string;
@@ -40,7 +67,7 @@ function SectionHeading({ icon, children }: { icon: React.ReactNode; children: R
       <span className="inline-flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
         {icon}
       </span>
-      <h2 className="text-base font-bold">{children}</h2>
+      <h2 className="text-lg font-bold">{children}</h2>
     </div>
   );
 }
@@ -68,7 +95,7 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
         </Link>
         <div className="flex flex-col items-center justify-center gap-3 py-24">
           <Loader2 className="size-8 animate-spin text-primary" />
-          <p className="text-sm text-muted-foreground">AIがウェブ検索でリサーチ中です。初回は30〜60秒かかります。</p>
+          <p className="text-base text-muted-foreground">AIがウェブ検索でリサーチ中です。初回は30〜60秒かかります。</p>
         </div>
       </div>
     );
@@ -77,8 +104,8 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
   if (notFound || !data) {
     return (
       <div className="py-20 text-center">
-        <p className="text-muted-foreground">トレンドが見つかりません</p>
-        <Link href="/trends" className="mt-4 inline-block rounded-md border px-4 py-2 text-sm hover:bg-muted">
+        <p className="text-base text-muted-foreground">トレンドが見つかりません</p>
+        <Link href="/trends" className="mt-4 inline-block rounded-md border px-4 py-2 text-base hover:bg-muted">
           トレンドレーダーに戻る
         </Link>
       </div>
@@ -104,25 +131,24 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="secondary" className="text-xs">{data.category}</Badge>
-                <span className={cn("inline-flex items-center gap-1 text-xs font-semibold", mcfg.cls)}>
+                <span className={cn("inline-flex items-center gap-1 text-sm font-semibold", mcfg.cls)}>
                   <MIcon className="size-3.5" />{mcfg.label}
                 </span>
               </div>
               <h1 className="text-3xl font-black tracking-tight">{data.keyword}</h1>
             </div>
             <div className="text-right">
-              <p className="text-xs text-muted-foreground">トレンドスコア</p>
+              <p className="text-sm text-muted-foreground">トレンドスコア</p>
               <span className={cn("text-6xl font-black tabular-nums leading-none", scoreColor(data.totalScore))}>
                 {data.totalScore}
               </span>
-              <span className="ml-1 text-sm text-muted-foreground">/ 100</span>
+              <span className="ml-1 text-base text-muted-foreground">/ 100</span>
             </div>
           </div>
 
-          {/* サマリー：ヘッダー内に自然に配置 */}
           {report?.summary && (
-            <p className="mt-4 text-[0.95rem] leading-relaxed text-foreground/80 border-t border-current/10 pt-4">
-              {report.summary}
+            <p className="mt-4 text-base leading-relaxed text-foreground/80 border-t border-current/10 pt-4">
+              <CitedText text={report.summary} sources={report.sources} />
             </p>
           )}
         </div>
@@ -131,9 +157,28 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
       {report ? (
         <div className="space-y-10">
 
+          {/* ── 直近の注目ニュース ─────────────────────────── */}
+          {report.recentNews && report.recentNews.length > 0 && (
+            <div className="space-y-4">
+              <SectionHeading icon={<CalendarDays className="size-4" />}>直近の注目ニュース</SectionHeading>
+              <div className="relative border-l-2 border-muted pl-6 space-y-6">
+                {report.recentNews.map((news, i) => (
+                  <div key={i} className="relative">
+                    <span className="absolute -left-[1.75rem] top-1.5 flex size-3.5 items-center justify-center rounded-full border-2 border-primary bg-background" />
+                    <p className="text-xs font-bold text-primary mb-1">{news.date}</p>
+                    <p className="text-base font-bold leading-snug mb-1.5">{news.headline}</p>
+                    <p className="text-base leading-relaxed text-muted-foreground">
+                      <CitedText text={news.detail} sources={report.sources} />
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* ── 今何が起きているか ─────────────────────────── */}
           <div className="space-y-4">
-            <SectionHeading icon={<Newspaper className="size-3.5" />}>今何が起きているか</SectionHeading>
+            <SectionHeading icon={<Newspaper className="size-4" />}>今何が起きているか</SectionHeading>
             <div className="space-y-3">
               {report.whatIsHappening.map((item, i) => (
                 <div key={i} className="flex gap-4 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/30">
@@ -143,18 +188,34 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
                   )}>
                     {i + 1}
                   </span>
-                  <p className="pt-0.5 text-[0.9rem] leading-relaxed">{item}</p>
+                  <p className="pt-0.5 text-base leading-relaxed">
+                    <CitedText text={item} sources={report.sources} />
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* ── このトレンドの特徴 ─────────────────────────── */}
-          {report.characteristics && (
+          {/* ── 投資・資金調達動向 ────────────────────────── */}
+          {report.investmentTrends && (
             <div className="space-y-4">
-              <SectionHeading icon={<Lightbulb className="size-3.5" />}>このトレンドの特徴</SectionHeading>
-              <div className="rounded-xl border-l-4 border-primary/50 bg-primary/[0.03] px-5 py-4">
-                <p className="text-[0.95rem] leading-relaxed">{report.characteristics}</p>
+              <SectionHeading icon={<DollarSign className="size-4" />}>投資・資金調達動向</SectionHeading>
+              <div className="rounded-xl border bg-gradient-to-br from-amber-50 to-orange-50 p-5 dark:from-amber-950/30 dark:to-orange-950/20 dark:border-amber-800/40">
+                <p className="text-base leading-relaxed">
+                  <CitedText text={report.investmentTrends} sources={report.sources} />
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* ── グローバル動向 ────────────────────────────── */}
+          {report.globalContext && (
+            <div className="space-y-4">
+              <SectionHeading icon={<Globe className="size-4" />}>グローバル動向・海外との比較</SectionHeading>
+              <div className="rounded-xl border bg-gradient-to-br from-sky-50 to-cyan-50 p-5 dark:from-sky-950/30 dark:to-cyan-950/20 dark:border-sky-800/40">
+                <p className="text-base leading-relaxed">
+                  <CitedText text={report.globalContext} sources={report.sources} />
+                </p>
               </div>
             </div>
           )}
@@ -162,21 +223,25 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── 注目プレイヤー ────────────────────────────── */}
           {report.keyPlayers.length > 0 && (
             <div className="space-y-4">
-              <SectionHeading icon={<Building2 className="size-3.5" />}>注目プレイヤー</SectionHeading>
+              <SectionHeading icon={<Building2 className="size-4" />}>注目プレイヤー</SectionHeading>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {report.keyPlayers.map((player, i) => {
                   const colonIdx = player.indexOf(":");
                   const name   = colonIdx > -1 ? player.slice(0, colonIdx).trim() : player;
                   const detail = colonIdx > -1 ? player.slice(colonIdx + 1).trim() : "";
                   return (
-                    <div key={i} className="rounded-xl border bg-card p-4 space-y-1.5">
+                    <div key={i} className="rounded-xl border bg-card p-4 space-y-2">
                       <div className="flex items-center gap-2">
                         <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-xs font-black text-primary">
                           {name.slice(0, 1)}
                         </span>
-                        <p className="font-bold text-sm leading-tight">{name}</p>
+                        <p className="font-bold text-base leading-tight">{name}</p>
                       </div>
-                      {detail && <p className="text-xs leading-relaxed text-muted-foreground">{detail}</p>}
+                      {detail && (
+                        <p className="text-sm leading-relaxed text-muted-foreground">
+                          <CitedText text={detail} sources={report.sources} />
+                        </p>
+                      )}
                     </div>
                   );
                 })}
@@ -187,43 +252,74 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
           {/* ── 市場規模 ──────────────────────────────────── */}
           {report.marketSize && report.marketSize !== "公開データなし" && (
             <div className="space-y-4">
-              <SectionHeading icon={<TrendingUp className="size-3.5" />}>市場規模</SectionHeading>
+              <SectionHeading icon={<TrendingUp className="size-4" />}>市場規模</SectionHeading>
               <div className="rounded-xl border bg-gradient-to-br from-blue-50 to-indigo-50 p-5 dark:from-blue-950/30 dark:to-indigo-950/20 dark:border-blue-800/40">
-                <p className="text-[0.95rem] leading-relaxed font-medium">{report.marketSize}</p>
+                <p className="text-base leading-relaxed font-medium">
+                  <CitedText text={report.marketSize} sources={report.sources} />
+                </p>
               </div>
             </div>
           )}
 
-          {/* ── 今後12ヶ月の見通し ────────────────────────── */}
+          {/* ── 今後の見通し ──────────────────────────────── */}
           {report.outlook && (
             <div className="space-y-4">
-              <SectionHeading icon={<Globe className="size-3.5" />}>今後12ヶ月の見通し</SectionHeading>
+              <SectionHeading icon={<Rocket className="size-4" />}>今後12〜18ヶ月の見通し</SectionHeading>
               <div className="rounded-xl border bg-gradient-to-br from-violet-50 to-purple-50 p-5 dark:from-violet-950/30 dark:to-purple-950/20 dark:border-violet-800/40">
-                <p className="text-[0.95rem] leading-relaxed">{report.outlook}</p>
+                <p className="text-base leading-relaxed">
+                  <CitedText text={report.outlook} sources={report.sources} />
+                </p>
               </div>
             </div>
           )}
 
-          {/* ── フッター ──────────────────────────────────── */}
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t pt-5">
-            <div className="flex flex-wrap gap-2">
-              {report.sources.slice(0, 5).map((url, i) => (
-                <a key={i} href={url} target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground hover:border-foreground/30">
-                  <ExternalLink className="size-3" />参照{i + 1}
-                </a>
-              ))}
+          {/* ── 出典 ──────────────────────────────────────── */}
+          {report.sources.length > 0 && (
+            <div className="border-t pt-8">
+              <div className="flex items-center gap-2 mb-4">
+                <BookOpen className="size-4 text-muted-foreground" />
+                <h2 className="text-base font-bold text-muted-foreground">出典</h2>
+              </div>
+              <ol className="space-y-3">
+                {report.sources.map((src) => (
+                  <li key={src.num} id={`ref-${src.num}`} className="flex gap-3 text-sm leading-relaxed">
+                    <span className="mt-0.5 shrink-0 text-sm font-bold text-muted-foreground tabular-nums">
+                      {src.num}.
+                    </span>
+                    <span className="text-muted-foreground">
+                      {src.publisher}
+                      {src.title && (
+                        <>
+                          {" — "}
+                          {src.url ? (
+                            <a
+                              href={src.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-foreground/70 underline underline-offset-2 hover:text-primary"
+                            >
+                              {src.title}
+                            </a>
+                          ) : (
+                            src.title
+                          )}
+                        </>
+                      )}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+              <p className="flex items-center gap-1.5 mt-5 text-xs text-muted-foreground">
+                <Clock className="size-3" />
+                AIリサーチ: {new Date(report.generatedAt).toLocaleDateString("ja-JP")}
+              </p>
             </div>
-            <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-              <Clock className="size-3" />
-              AIリサーチ: {new Date(report.generatedAt).toLocaleDateString("ja-JP")}
-            </p>
-          </div>
+          )}
         </div>
       ) : (
         <div className="rounded-xl border border-dashed p-12 text-center text-muted-foreground">
           <Loader2 className="mx-auto mb-3 size-6 animate-spin" />
-          <p className="text-sm">レポートを生成できませんでした。しばらくしてから再度アクセスしてください。</p>
+          <p className="text-base">レポートを生成できませんでした。しばらくしてから再度アクセスしてください。</p>
         </div>
       )}
     </div>

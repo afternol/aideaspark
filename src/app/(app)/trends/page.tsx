@@ -134,7 +134,7 @@ export default function TrendsPage() {
       {/* ===== Section 2: Heatmap ===== */}
       <div>
         <h2 className="mb-4 text-lg font-bold">ヒートマップ</h2>
-        <Card>
+        <Card className="!overflow-visible">
           <CardContent className="p-5">
             {groups.map((group) => {
               const groupTrends = trends.filter((t) => t.group === group);

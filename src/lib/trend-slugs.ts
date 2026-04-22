@@ -112,14 +112,28 @@ export function slugToKeyword(slug: string): string | null {
 }
 
 // レポートの型定義
+export interface TrendSource {
+  num: number;
+  title: string;
+  publisher: string;
+  url: string;
+}
+
+export interface RecentNewsItem {
+  date: string;      // "2026年3月" など
+  headline: string;  // 見出し
+  detail: string;    // 詳細（[N] を含む）
+}
+
 export interface TrendReportData {
-  summary: string;
-  whatIsHappening: string[];
-  characteristics: string;
-  scoreRationale: string;
-  keyPlayers: string[];
-  marketSize: string;
+  summary: string;               // [N] 引用番号を含む
+  whatIsHappening: string[];     // 5〜6件、各アイテムに [N]
+  recentNews: RecentNewsItem[];  // 日付付き直近ニュース 4〜5件
+  investmentTrends: string;      // 投資・資金調達動向 [N]
+  globalContext: string;         // グローバル動向・海外との比較 [N]
+  keyPlayers: string[];          // 各アイテムに [N]
+  marketSize: string;            // [N] を含む場合あり
   outlook: string;
-  sources: string[];
+  sources: TrendSource[];
   generatedAt: string;
 }
