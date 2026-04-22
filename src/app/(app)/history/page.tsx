@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { BusinessIdea } from "@/lib/types";
+
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
 
@@ -23,7 +25,7 @@ export default function HistoryPage() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      fetch("/api/history")
+      fetch(`${BASE_PATH}/api/history`)
         .then((r) => r.json())
         .then((data) => { if (Array.isArray(data)) setItems(data); })
         .finally(() => setLoading(false));

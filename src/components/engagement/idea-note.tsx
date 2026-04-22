@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import { StickyNote, Check } from "lucide-react";
 import { getSessionId } from "@/lib/session";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 interface IdeaNoteProps {
   ideaId: string;
 }
@@ -16,7 +18,7 @@ export function IdeaNote({ ideaId }: IdeaNoteProps) {
 
   useEffect(() => {
     const sid = getSessionId();
-    fetch(`/api/notes?ideaId=${ideaId}&sessionId=${sid}`)
+    fetch(`${BASE_PATH}/api/notes?ideaId=${ideaId}&sessionId=${sid}`)
       .then((r) => r.json())
       .then((data) => {
         if (data?.body) setBody(data.body);
@@ -27,7 +29,7 @@ export function IdeaNote({ ideaId }: IdeaNoteProps) {
   const save = (text: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(async () => {
-      await fetch("/api/notes", {
+      await fetch(`${BASE_PATH}/api/notes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ideaId, sessionId: getSessionId(), body: text }),

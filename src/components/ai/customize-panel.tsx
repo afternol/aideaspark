@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Wand2, Loader2, ArrowRight, X, ChevronDown, Lightbulb, Layers } from "lucide-react";
 import Link from "next/link";
 import { getSessionId } from "@/lib/session";
+
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -63,7 +65,7 @@ export function CustomizePanel({ ideaId, ideaName, onResult }: CustomizePanelPro
         body.ideaId = ideaId;
       }
 
-      const res = await fetch("/api/ai-customize", {
+      const res = await fetch(`${BASE_PATH}/api/ai-customize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

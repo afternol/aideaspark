@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { BusinessIdea, IdeaScore } from "@/lib/types";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 const avgScore = (s: IdeaScore) =>
   Math.round((Object.values(s).reduce((a, b) => a + b, 0) / 6) * 10) / 10;
 
@@ -20,7 +22,7 @@ export function PersonalPicks() {
 
   useEffect(() => {
     if (session?.user) {
-      fetch("/api/recommend")
+      fetch(`${BASE_PATH}/api/recommend`)
         .then((r) => r.json())
         .then((data) => { if (Array.isArray(data)) setIdeas(data); });
     }

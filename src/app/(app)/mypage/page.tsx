@@ -25,6 +25,8 @@ import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 interface MyPageData {
   user: {
     id: string;
@@ -54,7 +56,7 @@ export default function MyPage() {
   const [bio, setBio] = useState("");
 
   const load = async () => {
-    const d = await fetch("/api/mypage").then((r) => r.json());
+    const d = await fetch(`${BASE_PATH}/api/mypage`).then((r) => r.json());
     if (d?.user) {
       setData(d);
       setName(d.user.name || "");
@@ -71,7 +73,7 @@ export default function MyPage() {
   }, [status]);
 
   const handleSave = async () => {
-    await fetch("/api/mypage", {
+    await fetch(`${BASE_PATH}/api/mypage`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, bio }),
@@ -82,7 +84,7 @@ export default function MyPage() {
 
   const toggleProfileVisibility = async () => {
     if (!data) return;
-    await fetch("/api/mypage", {
+    await fetch(`${BASE_PATH}/api/mypage`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ profilePublic: !data.user.profilePublic }),

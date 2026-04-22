@@ -24,6 +24,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { NAV_ITEMS, NAV_EXPLORE_ITEMS, NAV_ALL_ITEMS } from "@/lib/constants";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 const iconMap: Record<string, React.ElementType> = {
   Lightbulb,
   TrendingUp,
@@ -37,7 +39,7 @@ function NotificationBell() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    fetch("/api/notifications")
+    fetch(`${BASE_PATH}/api/notifications`)
       .then((r) => r.json())
       .then((d) => { if (d?.unreadCount) setCount(d.unreadCount); })
       .catch(() => {});

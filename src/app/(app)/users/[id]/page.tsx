@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 interface ProfileData {
   user: { id: string; name: string | null; bio?: string | null; interests?: string | null; profilePublic?: boolean; createdAt?: string };
   stats: { commentCount: number; reactionCount: number } | null;
@@ -22,7 +24,7 @@ export default function UserProfilePage({ params }: { params: Promise<{ id: stri
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/users/${id}`)
+    fetch(`${BASE_PATH}/api/users/${id}`)
       .then((r) => r.json())
       .then((d) => { if (d?.user) setData(d); })
       .finally(() => setLoading(false));

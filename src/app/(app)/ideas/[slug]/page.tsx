@@ -39,6 +39,8 @@ import { BizPlanPanel } from "@/components/ai/bizplan-panel";
 import { IdeaRating } from "@/components/engagement/idea-rating";
 import { api } from "@/lib/api-client";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 const avgScore = (scores: IdeaScore) => {
   const vals = Object.values(scores);
   return Math.round((vals.reduce((a, b) => a + b, 0) / vals.length) * 10) / 10;
@@ -136,7 +138,7 @@ export default function IdeaDetailPage({ params }: { params: Promise<{ slug: str
       .then((data) => {
         setIdea(data);
         // Record view history
-        fetch("/api/history", {
+        fetch(`${BASE_PATH}/api/history`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ideaId: data.id }),
@@ -331,7 +333,7 @@ function SimilarIdeas({ ideaId }: { ideaId: string }) {
   const [similar, setSimilar] = useState<IdeaWithEngagement[]>([]);
 
   useEffect(() => {
-    fetch(`/api/ideas/${ideaId}/similar`)
+    fetch(`${BASE_PATH}/api/ideas/${ideaId}/similar`)
       .then((r) => r.json())
       .then((data) => { if (Array.isArray(data)) setSimilar(data); });
   }, [ideaId]);

@@ -84,7 +84,7 @@ export async function POST(request: Request) {
 
     // Step 1: Web検索でリサーチ
     const researchMsg = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-4-6",
       max_tokens: 4096,
       tools: [{ type: "web_search_20250305" as any, name: "web_search" }],
       messages: [{
@@ -107,7 +107,7 @@ ${ideaContext}
 
     // Step 2: プラン生成
     const planMsg = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-4-6",
       max_tokens: 8192,
       messages: [{
         role: "user",

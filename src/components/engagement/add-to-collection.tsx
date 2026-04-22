@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { getSessionId } from "@/lib/session";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 interface Collection {
   id: string;
   name: string;
@@ -24,7 +26,7 @@ export function AddToCollection({ ideaId, compact = false }: AddToCollectionProp
   const [newName, setNewName] = useState("");
 
   const load = async () => {
-    const res = await fetch(`/api/collections?sessionId=${getSessionId()}`);
+    const res = await fetch(`${BASE_PATH}/api/collections?sessionId=${getSessionId()}`);
     setCollections(await res.json());
   };
 
@@ -35,7 +37,7 @@ export function AddToCollection({ ideaId, compact = false }: AddToCollectionProp
 
   const toggleItem = async (col: Collection) => {
     const inCol = isInCollection(col);
-    await fetch("/api/collections/items", {
+    await fetch(`${BASE_PATH}/api/collections/items`, {
       method: inCol ? "DELETE" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ collectionId: col.id, ideaId }),
@@ -45,14 +47,14 @@ export function AddToCollection({ ideaId, compact = false }: AddToCollectionProp
 
   const createAndAdd = async () => {
     if (!newName.trim()) return;
-    const res = await fetch("/api/collections", {
+    const res = await fetch(`${BASE_PATH}/api/collections`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sessionId: getSessionId(), name: newName }),
     });
     const col = await res.json();
     if (col.id) {
-      await fetch("/api/collections/items", {
+      await fetch(`${BASE_PATH}/api/collections/items`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ collectionId: col.id, ideaId }),

@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CATEGORY_GROUPS } from "@/lib/constants";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export default function OnboardingPage() {
   const router = useRouter();
   const [selected, setSelected] = useState<string[]>([]);
@@ -25,7 +27,7 @@ export default function OnboardingPage() {
 
   const handleComplete = async () => {
     setLoading(true);
-    await fetch("/api/mypage", {
+    await fetch(`${BASE_PATH}/api/mypage`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ interests: selected, onboarded: true }),

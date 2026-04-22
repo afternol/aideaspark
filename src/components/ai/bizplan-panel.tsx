@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { FileText, Loader2, X, Download, ChevronDown, ChevronRight, AlertTriangle, Lightbulb, ExternalLink } from "lucide-react";
 import { getSessionId } from "@/lib/session";
+
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -76,7 +78,7 @@ export function BizPlanPanel({ ideaId, customIdeaId, ideaName }: BizPlanPanelPro
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/ai-bizplan", {
+      const res = await fetch(`${BASE_PATH}/api/ai-bizplan`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ideaId, customIdeaId, customNote: customNote.trim() || undefined, sessionId: getSessionId() }),

@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 interface IdeaSummary {
   id: string;
   number: number;
@@ -32,7 +34,7 @@ export default function AdminPage() {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    fetch("/api/admin/ideas")
+    fetch(`${BASE_PATH}/api/admin/ideas`)
       .then((r) => {
         if (r.status === 403) {
           setError("管理者権限がありません。ADMIN_EMAIL が設定されているか確認してください。");
@@ -69,7 +71,7 @@ export default function AdminPage() {
       return;
     }
 
-    const res = await fetch("/api/admin/ideas", {
+    const res = await fetch(`${BASE_PATH}/api/admin/ideas`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form, number: Number(form.number), tags, scores, scoreComments, trendKeywords }),
@@ -89,7 +91,7 @@ export default function AdminPage() {
 
   async function handleDelete(id: string, name: string) {
     if (!confirm(`「${name}」を削除しますか？関連データ（コメント・リアクション等）もすべて削除されます。`)) return;
-    const res = await fetch("/api/admin/ideas", {
+    const res = await fetch(`${BASE_PATH}/api/admin/ideas`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
