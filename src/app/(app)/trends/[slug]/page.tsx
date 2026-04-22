@@ -5,7 +5,7 @@ import Link from "next/link";
 import { use } from "react";
 import {
   ArrowLeft, ArrowUpRight, ArrowRight, ArrowDownRight,
-  Loader2, Newspaper, Building2, TrendingUp, Globe,
+  Loader2, Building2, TrendingUp, Globe,
   Clock, BookOpen, CalendarDays, DollarSign, Rocket,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -154,10 +154,10 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
       {report ? (
         <div className="space-y-10">
 
-          {/* ── 直近の注目ニュース ─────────────────────────── */}
+          {/* ── 今何が起きているか ─────────────────────────── */}
           {report.recentNews && report.recentNews.length > 0 && (
             <div className="space-y-4">
-              <SectionHeading icon={<CalendarDays className="size-4" />}>直近の注目ニュース</SectionHeading>
+              <SectionHeading icon={<CalendarDays className="size-4" />}>今何が起きているか</SectionHeading>
               <div className="relative border-l-2 border-muted pl-6 space-y-6">
                 {report.recentNews.map((news, i) => (
                   <div key={i} className="relative">
@@ -173,25 +173,6 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
             </div>
           )}
 
-          {/* ── 今何が起きているか ─────────────────────────── */}
-          <div className="space-y-4">
-            <SectionHeading icon={<Newspaper className="size-4" />}>今何が起きているか</SectionHeading>
-            <div className="space-y-3">
-              {report.whatIsHappening.map((item, i) => (
-                <div key={i} className="flex gap-4 rounded-xl border bg-card p-4 transition-colors hover:bg-muted/30">
-                  <span className={cn(
-                    "flex size-7 shrink-0 items-center justify-center rounded-full text-sm font-black",
-                    i === 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-                  )}>
-                    {i + 1}
-                  </span>
-                  <p className="pt-0.5 text-base leading-relaxed">
-                    <CitedText text={item} sources={report.sources} />
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
 
           {/* ── 投資・資金調達動向 ────────────────────────── */}
           {report.investmentTrends && (
