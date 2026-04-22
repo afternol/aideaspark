@@ -55,6 +55,7 @@ export interface BusinessIdea {
   patterns?: string[];
   whyNow?: string;
   noveltyNote?: string;
+  strengthNote?: string;
   patternRationale?: string;
 }
 

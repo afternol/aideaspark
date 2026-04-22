@@ -91,7 +91,8 @@ model Idea {
   inspirationSource  String?
   patterns           Json     @default("[]") // array of pattern IDs e.g. ["A-1", "B-3"]
   whyNow             String?  // なぜ今このビジネスか（タイミング根拠）
-  noveltyNote        String?  // 新規性の説明（どの次元で新しいか）
+  noveltyNote        String?  // 何が新しいのか
+  strengthNote       String?  // 何が良いのか（強み・優位性）
   patternRationale   String?  // パターン複合の説明（なぜこの組み合わせか）
 
   reactions        Reaction[]

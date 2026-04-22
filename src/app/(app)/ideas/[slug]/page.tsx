@@ -17,6 +17,7 @@ import {
   Loader2,
   Sparkles,
   Clock,
+  Star,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -53,6 +54,19 @@ function DetailBox({ icon, label, children }: { icon: React.ReactNode; label: st
       <div className="text-[0.95rem] leading-relaxed text-foreground/80">
         {typeof children === "string" ? <GlossaryText text={children} /> : children}
       </div>
+    </div>
+  );
+}
+
+function InsightBox({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
+  return (
+    <div className="rounded-lg border border-border bg-muted/30 px-3 py-2.5">
+      <p className="mb-1 flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+        {icon}{label}
+      </p>
+      <p className="text-[0.82rem] leading-relaxed text-foreground/75">
+        {typeof children === "string" ? children : children}
+      </p>
     </div>
   );
 }
@@ -197,13 +211,20 @@ export default function IdeaDetailPage({ params }: { params: Promise<{ slug: str
         </div>
 
         <div className="space-y-3 lg:col-span-3">
+          {(idea.whyNow || idea.noveltyNote || idea.strengthNote) && (
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {idea.whyNow && (
+                <InsightBox icon={<Clock className="size-3.5" />} label="なぜ今か">{idea.whyNow}</InsightBox>
+              )}
+              {idea.noveltyNote && (
+                <InsightBox icon={<Sparkles className="size-3.5" />} label="何が新しいのか">{idea.noveltyNote}</InsightBox>
+              )}
+              {idea.strengthNote && (
+                <InsightBox icon={<Star className="size-3.5" />} label="何が良いのか">{idea.strengthNote}</InsightBox>
+              )}
+            </div>
+          )}
           <DetailBox icon={<Lightbulb className="size-4" />} label="コンセプト・提供価値">{idea.concept}</DetailBox>
-          {idea.whyNow && (
-            <DetailBox icon={<Clock className="size-4" />} label="なぜ今か">{idea.whyNow}</DetailBox>
-          )}
-          {idea.noveltyNote && (
-            <DetailBox icon={<Sparkles className="size-4" />} label="新規性">{idea.noveltyNote}</DetailBox>
-          )}
           <DetailBox icon={<Target className="size-4" />} label="ターゲット">{idea.target}</DetailBox>
           <DetailBox icon={<Zap className="size-4" />} label="解決する課題">{idea.problem}</DetailBox>
           <DetailBox icon={<Puzzle className="size-4" />} label="プロダクト・サービス内容"><BulletList text={idea.product} /></DetailBox>
