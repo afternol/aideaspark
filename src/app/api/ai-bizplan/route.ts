@@ -3,6 +3,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { prisma } from "@/lib/prisma";
 import { serializeIdea } from "@/lib/api-helpers";
 import { checkAiRateLimit, recordAiUsage } from "@/lib/ai-rate-limit";
+import { auth } from "@/lib/auth";
 
 function extractJSON(text: string): any {
   let cleaned = text.replace(/```(?:json)?\s*/g, "").replace(/```\s*/g, "").trim();
@@ -36,11 +37,15 @@ function extractWebSources(msg: any): { title: string; url: string }[] {
 
 export async function POST(request: Request) {
   try {
+    const session = await auth();
+    const authUserId = session?.user?.id ?? null;
+
     const { ideaId, customIdeaId, customNote, sessionId } = await request.json();
     if (!sessionId) return NextResponse.json({ error: "sessionId is required" }, { status: 400 });
 
+    const rateId = authUserId ?? sessionId;
     // レート制限チェック
-    const { allowed, remaining, resetIn } = await checkAiRateLimit(sessionId, "ai-bizplan");
+    const { allowed, remaining, resetIn } = await checkAiRateLimit(rateId, "ai-bizplan");
     if (!allowed) {
       return NextResponse.json(
         { error: `ビジネスプラン生成の利用上限（24時間5回）に達しました。${resetIn}にリセットされます。` },
@@ -188,12 +193,13 @@ ${verifiedUrlList || "（検索結果からURLが取得できませんでした�
     }
 
     // 使用記録
-    await recordAiUsage(sessionId, "ai-bizplan");
+    await recordAiUsage(rateId, "ai-bizplan");
 
-    // Save to DB (Json 型なのでオブジェクトをそのまま渡す)
+    // Save to DB
     const bizPlan = await prisma.businessPlan.create({
       data: {
         userId: sessionId,
+        authUserId,
         ideaId: customIdeaId ? null : ideaId,
         customIdeaId: customIdeaId || null,
         content: plan,

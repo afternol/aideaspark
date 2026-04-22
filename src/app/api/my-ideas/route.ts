@@ -1,20 +1,27 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { serializeIdea } from "@/lib/api-helpers";
+import { auth } from "@/lib/auth";
 
 export async function GET(request: Request) {
   try {
+    const session = await auth();
+    const authUserId = session?.user?.id ?? null;
     const { searchParams } = new URL(request.url);
     const sessionId = searchParams.get("sessionId");
     if (!sessionId) return NextResponse.json({ customIdeas: [], plans: [] });
 
+    const idWhere = authUserId
+      ? { OR: [{ authUserId }, { userId: sessionId }] }
+      : { userId: sessionId };
+
     const customIdeas = await prisma.customIdea.findMany({
-      where: { userId: sessionId },
+      where: idWhere,
       orderBy: { createdAt: "desc" },
     });
 
     const plans = await prisma.businessPlan.findMany({
-      where: { userId: sessionId },
+      where: idWhere,
       orderBy: { createdAt: "desc" },
     });
 
@@ -72,13 +79,19 @@ export async function GET(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    const session = await auth();
+    const authUserId = session?.user?.id ?? null;
     const { type, id, sessionId } = await request.json();
     if (!sessionId) return NextResponse.json({}, { status: 401 });
 
+    const ownerCheck = authUserId
+      ? { id, OR: [{ authUserId }, { userId: sessionId }] }
+      : { id, userId: sessionId };
+
     if (type === "custom") {
-      await prisma.customIdea.deleteMany({ where: { id, userId: sessionId } });
+      await prisma.customIdea.deleteMany({ where: ownerCheck });
     } else if (type === "plan") {
-      await prisma.businessPlan.deleteMany({ where: { id, userId: sessionId } });
+      await prisma.businessPlan.deleteMany({ where: ownerCheck });
     }
 
     return NextResponse.json({ ok: true });

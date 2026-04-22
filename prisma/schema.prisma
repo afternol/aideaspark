@@ -25,6 +25,9 @@ model User {
   declarations    Declaration[]
   viewHistories   ViewHistory[]
   notifications   Notification[]
+  customIdeas     CustomIdea[]
+  businessPlans   BusinessPlan[]
+  collections     Collection[]
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
@@ -150,13 +153,17 @@ model Declaration {
 }
 
 model Collection {
-  id        String   @id @default(cuid())
-  sessionId String
-  name      String
-  createdAt DateTime @default(now())
-  items     CollectionItem[]
+  id         String   @id @default(cuid())
+  sessionId  String
+  authUserId String?  // authenticated user id (set when logged in)
+  name       String
+  createdAt  DateTime @default(now())
+  items      CollectionItem[]
+
+  user       User?    @relation(fields: [authUserId], references: [id], onDelete: SetNull)
 
   @@unique([sessionId, name])
+  @@index([authUserId])
 }
 
 model CollectionItem {
@@ -208,25 +215,33 @@ model Notification {
 
 model CustomIdea {
   id            String   @id @default(cuid())
-  userId        String   // stores sessionId or userId
+  userId        String   // stores sessionId (always set)
+  authUserId    String?  // authenticated user id (set when logged in)
   baseIdeaId    String
   conditions    Json     // budget, teamSize, skills, timeline
   result        Json     // customized idea data
   createdAt     DateTime @default(now())
 
+  user          User?    @relation(fields: [authUserId], references: [id], onDelete: SetNull)
+
   @@index([userId])
+  @@index([authUserId])
 }
 
 model BusinessPlan {
   id            String   @id @default(cuid())
-  userId        String   // stores sessionId or userId
+  userId        String   // stores sessionId (always set)
+  authUserId    String?  // authenticated user id (set when logged in)
   ideaId        String?
   customIdeaId  String?
   content       Json     // full plan content
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  user          User?    @relation(fields: [authUserId], references: [id], onDelete: SetNull)
+
   @@index([userId])
+  @@index([authUserId])
 }
 
 model TrendCache {

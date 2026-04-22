@@ -3,6 +3,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { prisma } from "@/lib/prisma";
 import { serializeIdea } from "@/lib/api-helpers";
 import { checkAiRateLimit, recordAiUsage } from "@/lib/ai-rate-limit";
+import { auth } from "@/lib/auth";
 
 function extractJSON(text: string): any {
   let cleaned = text.replace(/```(?:json)?\s*/g, "").replace(/```\s*/g, "").trim();
@@ -19,6 +20,9 @@ function extractJSON(text: string): any {
 
 export async function POST(request: Request) {
   try {
+    const session = await auth();
+    const authUserId = session?.user?.id ?? null;
+
     const { ideaId, customIdeaId, conditions, sessionId } = await request.json();
     if (!sessionId) {
       return NextResponse.json({ error: "sessionId is required" }, { status: 400 });
@@ -27,8 +31,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "conditions required" }, { status: 400 });
     }
 
+    const rateId = authUserId ?? sessionId;
     // レート制限チェック
-    const { allowed, remaining, resetIn } = await checkAiRateLimit(sessionId, "ai-customize");
+    const { allowed, remaining, resetIn } = await checkAiRateLimit(rateId, "ai-customize");
     if (!allowed) {
       return NextResponse.json(
         { error: `カスタマイズの利用上限（24時間10回）に達しました。${resetIn}にリセットされます。` },
@@ -117,12 +122,13 @@ ${conditions.notes || "特になし"}
     }
 
     // 使用記録
-    await recordAiUsage(sessionId, "ai-customize");
+    await recordAiUsage(rateId, "ai-customize");
 
-    // Save to DB (Json 型なのでオブジェクトをそのまま渡す)
+    // Save to DB
     const customIdea = await prisma.customIdea.create({
       data: {
         userId: sessionId,
+        authUserId,
         baseIdeaId: baseIdeaId,
         conditions: conditions,
         result: result,
