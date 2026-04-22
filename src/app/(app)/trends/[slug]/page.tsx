@@ -174,25 +174,13 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
           )}
 
 
-          {/* ── 投資・資金調達動向 ────────────────────────── */}
-          {report.investmentTrends && (
+          {/* ── 市場規模 ──────────────────────────────────── */}
+          {report.marketSize && report.marketSize !== "公開データなし" && (
             <div className="space-y-4">
-              <SectionHeading icon={<DollarSign className="size-4" />}>投資・資金調達動向</SectionHeading>
-              <div className="rounded-xl border bg-gradient-to-br from-amber-50 to-orange-50 p-5 dark:from-amber-950/30 dark:to-orange-950/20 dark:border-amber-800/40">
-                <p className="text-base leading-relaxed">
-                  <CitedText text={report.investmentTrends} sources={report.sources} />
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* ── グローバル動向 ────────────────────────────── */}
-          {report.globalContext && (
-            <div className="space-y-4">
-              <SectionHeading icon={<Globe className="size-4" />}>グローバル動向・海外との比較</SectionHeading>
-              <div className="rounded-xl border bg-gradient-to-br from-sky-50 to-cyan-50 p-5 dark:from-sky-950/30 dark:to-cyan-950/20 dark:border-sky-800/40">
-                <p className="text-base leading-relaxed">
-                  <CitedText text={report.globalContext} sources={report.sources} />
+              <SectionHeading icon={<TrendingUp className="size-4" />}>市場規模</SectionHeading>
+              <div className="rounded-xl border bg-gradient-to-br from-blue-50 to-indigo-50 p-5 dark:from-blue-950/30 dark:to-indigo-950/20 dark:border-blue-800/40">
+                <p className="text-base leading-relaxed font-medium">
+                  <CitedText text={report.marketSize} sources={report.sources} />
                 </p>
               </div>
             </div>
@@ -227,13 +215,25 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
             </div>
           )}
 
-          {/* ── 市場規模 ──────────────────────────────────── */}
-          {report.marketSize && report.marketSize !== "公開データなし" && (
+          {/* ── 投資・資金調達動向 ────────────────────────── */}
+          {report.investmentTrends && (
             <div className="space-y-4">
-              <SectionHeading icon={<TrendingUp className="size-4" />}>市場規模</SectionHeading>
-              <div className="rounded-xl border bg-gradient-to-br from-blue-50 to-indigo-50 p-5 dark:from-blue-950/30 dark:to-indigo-950/20 dark:border-blue-800/40">
-                <p className="text-base leading-relaxed font-medium">
-                  <CitedText text={report.marketSize} sources={report.sources} />
+              <SectionHeading icon={<DollarSign className="size-4" />}>投資・資金調達動向</SectionHeading>
+              <div className="rounded-xl border bg-gradient-to-br from-amber-50 to-orange-50 p-5 dark:from-amber-950/30 dark:to-orange-950/20 dark:border-amber-800/40">
+                <p className="text-base leading-relaxed">
+                  <CitedText text={report.investmentTrends} sources={report.sources} />
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* ── グローバル動向 ────────────────────────────── */}
+          {report.globalContext && (
+            <div className="space-y-4">
+              <SectionHeading icon={<Globe className="size-4" />}>グローバル動向・海外との比較</SectionHeading>
+              <div className="rounded-xl border bg-gradient-to-br from-sky-50 to-cyan-50 p-5 dark:from-sky-950/30 dark:to-cyan-950/20 dark:border-sky-800/40">
+                <p className="text-base leading-relaxed">
+                  <CitedText text={report.globalContext} sources={report.sources} />
                 </p>
               </div>
             </div>
