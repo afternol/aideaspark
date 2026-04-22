@@ -87,7 +87,7 @@ function InsightBox({
   const s = INSIGHT_STYLES[color];
   return (
     <div className={`rounded-xl border p-3.5 ${s.wrap}`}>
-      <p className={`mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider ${s.label}`}>
+      <p className={`mb-2 flex items-center gap-1.5 text-sm font-bold ${s.label}`}>
         <span className={`inline-flex size-4 items-center justify-center rounded-full ${s.icon}`}>
           {icon}
         </span>
