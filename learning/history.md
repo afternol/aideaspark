@@ -135,3 +135,41 @@
 
 ### 追加パッケージ
 - `jspdf`, `html2canvas`, `docx`, `file-saver`, `@types/file-saver`
+
+---
+
+## Phase 3: PAINTプラットフォーム化（2026-04-19）
+
+### プラットフォーム命名決定
+- **PAINT = Platform for Augmented Innovation aNd Transformation**
+- 検討経緯: AIP（3文字）→ 6文字拡張 → AI連続・意味ある英単語条件 → PAINT に決定
+- "Augmented Innovation" の頭文字がAI → AIプラットフォームを自然に内包
+- "aNd" のNを使う構造が独創的かつ自然な英語フレーズを形成
+
+### ドメイン取得
+- `paint-platform.com` を取得（2026-04-19）
+- AideaSpark（旧BizIdea）は `paint-platform.com/aideaspark` に配置
+
+### アーキテクチャ決定
+- 単独ドメイン × サブディレクトリ構成を採用
+- 理由: SEOオーソリティ集約・認証自動共有・開発効率・投資家向けプラットフォームストーリー
+- Phase1: 単一Next.jsアプリ + basePath（現在の実装）
+- Phase2: Next.js Multi-zones移行（サービス2〜3個目以降）
+
+### 売却戦略決定
+- プラットフォーム全体売却を目標（個別売却より20〜60億円高い試算）
+- AIエージェント層がサービス横断データで価値を発揮するため分離不可
+- 各サービスのDB境界は明確に設計し、ピボットオプションも残す
+
+### コード変更（AideaSpark → paint-platform.com/aideaspark 移行）
+- `next.config.ts`: `basePath: '/aideaspark'` 追加
+- `src/lib/api-client.ts`: `NEXT_PUBLIC_BASE_PATH` 環境変数でAPIパスを補完
+- `vercel.json`: ルート `/` → `/aideaspark` リダイレクト追加
+- `prisma/schema.prisma`: `directUrl` 追加（Supabase対応）
+
+### ネクストステップ
+1. ローカル確認: `npm run dev` → `localhost:4001/aideaspark` の動作確認
+2. Supabaseプロジェクト作成 → DBマイグレーション実行
+3. Vercelプロジェクト作成 → 環境変数設定 → デプロイ
+4. DNS設定（paint-platform.com → Vercel）
+5. 本番動作確認チェックリスト実施

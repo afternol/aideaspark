@@ -115,3 +115,37 @@ BizIdea は運営がビジネスアイデアを配信する「メディア型プ
 - フォロー/フォロワー: コミュニティ成熟前に入れても使われない → 削除済み
 - 「やります」宣言: エンゲージメントとして重すぎ → 軽いリアクション（いいね等）に集約
 - 表示項目: 「ユーザーがその場で意思決定に使うか」で判断。飾り情報はノイズ
+
+---
+
+## PAINTプラットフォーム戦略（2026-04-19 改訂）
+
+### プラットフォーム名
+**PAINT = Platform for Augmented Innovation aNd Transformation**
+- AideaSpark（旧BizIdea）はPAINTの第1サービスとして位置づけ
+- URL: paint-platform.com/aideaspark
+
+### プラットフォーム全体の機能構成（platform-feature-list.xlsx準拠）
+```
+①発見・機会探索  → /aideaspark（AideaSpark）
+②リサーチ・調査  → /research（AIリサーチ、次の実装候補）
+③事業設計・計画  → /plan
+④バリデーション  → /validate
+⑤調達・マッチング → /partner
+⑥実行支援       → /aideaspark内に統合
+⑦成長・エコシステム → /media + 全サービス横断
+🤖 AIエージェント層 → 全サービス横断（最終形）
+```
+
+### ドメイン・アーキテクチャ方針
+- 単独ドメイン × サブディレクトリ（SEO集約・認証共通化のため）
+- Phase1: 単一Next.jsアプリ + basePath
+- Phase2: Next.js Multi-zones（サービス増加時）
+- DB: Supabase（PostgreSQL）でスキーマ分離
+- 将来の分離売却に備えてサービス間境界を明確に設計
+
+### 売却戦略
+- プラットフォーム全体売却が最優先（バリュエーション最大化）
+- AIエージェント層のデータ統合が競争優位の核心
+- 個別売却は交渉長期化時のピボットオプションとして設計上担保
+- 目標: ARR3〜5億円 → 50〜100億円バリュエーション

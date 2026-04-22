@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export default function RegisterPage() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -23,37 +25,41 @@ export default function RegisterPage() {
     setError("");
     setLoading(true);
 
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+    try {
+      const res = await fetch(`${BASE_PATH}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      setError(data.error || "登録に失敗しました");
+      if (!res.ok) {
+        setError(data.error || "登録に失敗しました");
+        return;
+      }
+
+      // Auto login after registration
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError("登録は完了しましたが、ログインに失敗しました");
+      } else {
+        router.push("/onboarding");
+      }
+    } catch {
+      setError("通信エラーが発生しました。もう一度お試しください");
+    } finally {
       setLoading(false);
-      return;
-    }
-
-    // Auto login after registration
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
-
-    if (result?.error) {
-      setError("登録は完了しましたが、ログインに失敗しました");
-      setLoading(false);
-    } else {
-      router.push("/onboarding");
     }
   };
 
   const handleGoogle = () => {
-    signIn("google", { callbackUrl: "/feed" });
+    signIn("google", { callbackUrl: `${BASE_PATH}/feed` });
   };
 
   return (

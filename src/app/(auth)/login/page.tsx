@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -22,22 +24,27 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
 
-    if (result?.error) {
-      setError("メールアドレスまたはパスワードが正しくありません");
+      if (result?.error) {
+        setError("メールアドレスまたはパスワードが正しくありません");
+      } else {
+        router.push("/feed");
+      }
+    } catch {
+      setError("通信エラーが発生しました。もう一度お試しください");
+    } finally {
       setLoading(false);
-    } else {
-      router.push("/feed");
     }
   };
 
   const handleGoogle = () => {
-    signIn("google", { callbackUrl: "/feed" });
+    signIn("google", { callbackUrl: `${BASE_PATH}/feed` });
   };
 
   return (

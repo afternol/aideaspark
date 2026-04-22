@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import {
   Wand2,
   FileText,
@@ -24,6 +25,8 @@ import {
   Plus,
   FileDown,
   History,
+  LogIn,
+  UserPlus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,6 +47,8 @@ import type { IdeaScore } from "@/lib/types";
 import { SCORE_LABELS } from "@/lib/types";
 import { formatDistanceToNow } from "date-fns";
 import { ja } from "date-fns/locale";
+
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const scoreColor = (n: number) =>
   n >= 4 ? "text-emerald-600" : n >= 3 ? "text-yellow-600" : "text-red-600";
@@ -117,30 +122,39 @@ function groupByBase<T extends { baseIdeaId: string; id: string }>(items: T[]): 
 }
 
 export default function MyIdeasPage() {
+  const { data: session, status: sessionStatus } = useSession();
   const [customIdeas, setCustomIdeas] = useState<CustomIdea[]>([]);
   const [plans, setPlans] = useState<Plan[]>([]);
   const [collections, setCollections] = useState<CollectionData[]>([]);
   const [allIdeas, setAllIdeas] = useState<IdeaBasic[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
   const load = async () => {
-    const sid = getSessionId();
-    const [myRes, colRes, ideasRes] = await Promise.all([
-      fetch(`/api/my-ideas?sessionId=${sid}`).then((r) => r.json()),
-      fetch(`/api/collections?sessionId=${sid}`).then((r) => r.json()),
-      fetch("/api/ideas").then((r) => r.json()),
-    ]);
-    if (myRes.customIdeas) setCustomIdeas(myRes.customIdeas);
-    if (myRes.plans) setPlans(myRes.plans);
-    if (Array.isArray(colRes)) setCollections(colRes);
-    if (Array.isArray(ideasRes)) setAllIdeas(ideasRes);
-    setLoading(false);
+    setLoadError(false);
+    try {
+      const sid = getSessionId();
+      const [myRes, colRes, ideasRes] = await Promise.all([
+        fetch(`${BASE_PATH}/api/my-ideas?sessionId=${sid}`).then((r) => r.json()),
+        fetch(`${BASE_PATH}/api/collections?sessionId=${sid}`).then((r) => r.json()),
+        fetch(`${BASE_PATH}/api/ideas`).then((r) => r.json()),
+      ]);
+      if (myRes.customIdeas) setCustomIdeas(myRes.customIdeas);
+      if (myRes.plans) setPlans(myRes.plans);
+      if (Array.isArray(colRes)) setCollections(colRes);
+      if (Array.isArray(ideasRes)) setAllIdeas(ideasRes);
+    } catch (e) {
+      console.error("[my-ideas] fetch error:", e);
+      setLoadError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { load(); }, []);
 
   const handleDelete = async (type: "custom" | "plan", id: string) => {
-    await fetch("/api/my-ideas", {
+    await fetch(`${BASE_PATH}/api/my-ideas`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type, id, sessionId: getSessionId() }),
@@ -154,13 +168,30 @@ export default function MyIdeasPage() {
   const uniqueCustomCount = customSlots.size;
   const uniquePlanCount = planSlots.size;
 
-  if (loading) {
+  if (loading || sessionStatus === "loading") {
     return (
       <div className="flex items-center justify-center py-20">
         <Loader2 className="size-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
+
+  if (loadError) {
+    return (
+      <div className="mx-auto max-w-4xl">
+        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-8 text-center">
+          <AlertTriangle className="mx-auto mb-3 size-10 text-destructive/50" />
+          <p className="font-medium text-destructive">データの読み込みに失敗しました</p>
+          <p className="mt-1 text-sm text-muted-foreground">ネットワーク接続を確認してください</p>
+          <Button variant="outline" size="sm" className="mt-4" onClick={load}>
+            再読み込み
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  const isGuest = sessionStatus === "unauthenticated";
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -173,6 +204,30 @@ export default function MyIdeasPage() {
           保存したアイデア・AIカスタマイズ・ビジネスプラン
         </p>
       </div>
+
+      {/* ゲストバナー */}
+      {isGuest && (
+        <div className="flex flex-col gap-3 rounded-lg border border-primary/20 bg-primary/5 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-medium">ゲストとして閲覧中</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              ログインするとAIカスタマイズ・プランをアカウントに保存し、どこからでも確認できます
+            </p>
+          </div>
+          <div className="flex shrink-0 gap-2">
+            <Link href="/login">
+              <Button size="sm" className="gap-1.5">
+                <LogIn className="size-3.5" />ログイン
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button size="sm" variant="outline" className="gap-1.5">
+                <UserPlus className="size-3.5" />新規登録
+              </Button>
+            </Link>
+          </div>
+        </div>
+      )}
 
       <Tabs defaultValue="custom">
         <TabsList className="w-full">
@@ -203,15 +258,39 @@ export default function MyIdeasPage() {
         <TabsContent value="custom" className="mt-4 space-y-4">
           {uniqueCustomCount === 0 ? (
             <Card className="border-dashed">
-              <CardContent className="py-12 text-center">
+              <CardContent className="py-10 text-center">
                 <Wand2 className="mx-auto mb-3 size-10 text-muted-foreground/30" />
-                <p className="text-muted-foreground">まだカスタマイズ版がありません</p>
+                <p className="font-medium">まだカスタマイズ版がありません</p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  アイデア詳細ページの「AIカスタマイズ」から作成できます
+                  以下の手順でオリジナルアイデアを作成できます
                 </p>
-                <Link href="/feed" className="mt-3 inline-block">
-                  <Button variant="outline" size="sm">アイデアを探す</Button>
+                <ol className="mx-auto mt-4 max-w-xs space-y-2 text-left text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">1</span>
+                    アイデア一覧でアイデアを選ぶ
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">2</span>
+                    詳細ページの「AIカスタマイズ」を押す
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">3</span>
+                    条件を入力してAI生成 → ここに保存される
+                  </li>
+                </ol>
+                <Link href="/feed" className="mt-5 inline-block">
+                  <Button size="sm" className="gap-1.5">
+                    アイデアを探す <ArrowRight className="size-3.5" />
+                  </Button>
                 </Link>
+                {isGuest && (
+                  <p className="mt-3 text-xs text-muted-foreground">
+                    <Link href="/login" className="font-medium text-primary hover:underline">ログイン</Link>
+                    {" "}または{" "}
+                    <Link href="/register" className="font-medium text-primary hover:underline">新規登録</Link>
+                    {" "}でデータをアカウントに保存
+                  </p>
+                )}
               </CardContent>
             </Card>
           ) : (
@@ -225,15 +304,39 @@ export default function MyIdeasPage() {
         <TabsContent value="plans" className="mt-4 space-y-4">
           {uniquePlanCount === 0 ? (
             <Card className="border-dashed">
-              <CardContent className="py-12 text-center">
+              <CardContent className="py-10 text-center">
                 <FileText className="mx-auto mb-3 size-10 text-muted-foreground/30" />
-                <p className="text-muted-foreground">まだビジネスプランがありません</p>
+                <p className="font-medium">まだビジネスプランがありません</p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  アイデア詳細ページの「AIビジネスプラン生成」から作成できます
+                  以下の手順でビジネスプランを作成できます
                 </p>
-                <Link href="/feed" className="mt-3 inline-block">
-                  <Button variant="outline" size="sm">アイデアを探す</Button>
+                <ol className="mx-auto mt-4 max-w-xs space-y-2 text-left text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">1</span>
+                    アイデア一覧でアイデアを選ぶ
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">2</span>
+                    詳細ページの「AIビジネスプラン生成」を押す
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">3</span>
+                    生成されたプランが自動でここに保存される
+                  </li>
+                </ol>
+                <Link href="/feed" className="mt-5 inline-block">
+                  <Button size="sm" className="gap-1.5">
+                    アイデアを探す <ArrowRight className="size-3.5" />
+                  </Button>
                 </Link>
+                {isGuest && (
+                  <p className="mt-3 text-xs text-muted-foreground">
+                    <Link href="/login" className="font-medium text-primary hover:underline">ログイン</Link>
+                    {" "}または{" "}
+                    <Link href="/register" className="font-medium text-primary hover:underline">新規登録</Link>
+                    {" "}でデータをアカウントに保存
+                  </p>
+                )}
               </CardContent>
             </Card>
           ) : (
@@ -302,7 +405,7 @@ function CustomSlotCard({ versions, onDelete, onPlanGenerated }: { versions: Cus
     setRecustomizeLoading(true);
     setRecustomizeError("");
     try {
-      const res = await fetch("/api/ai-customize", {
+      const res = await fetch(`${BASE_PATH}/api/ai-customize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -330,7 +433,7 @@ function CustomSlotCard({ versions, onDelete, onPlanGenerated }: { versions: Cus
     setPlanLoading(true);
     setPlanError("");
     try {
-      const res = await fetch("/api/ai-bizplan", {
+      const res = await fetch(`${BASE_PATH}/api/ai-bizplan`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -876,7 +979,7 @@ function CollectionsTab({ collections, allIdeas, onReload }: { collections: Coll
   const handleCreate = async () => {
     if (!newName.trim() || creating) return;
     setCreating(true);
-    await fetch("/api/collections", {
+    await fetch(`${BASE_PATH}/api/collections`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sessionId: getSessionId(), name: newName }),
@@ -887,7 +990,7 @@ function CollectionsTab({ collections, allIdeas, onReload }: { collections: Coll
   };
 
   const handleDeleteCollection = async (id: string) => {
-    await fetch("/api/collections", {
+    await fetch(`${BASE_PATH}/api/collections`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, sessionId: getSessionId() }),
@@ -896,7 +999,7 @@ function CollectionsTab({ collections, allIdeas, onReload }: { collections: Coll
   };
 
   const handleRemoveItem = async (collectionId: string, ideaId: string) => {
-    await fetch("/api/collections/items", {
+    await fetch(`${BASE_PATH}/api/collections/items`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ collectionId, ideaId }),
@@ -943,12 +1046,23 @@ function CollectionsTab({ collections, allIdeas, onReload }: { collections: Coll
       </div>
       {collections.length === 0 ? (
         <Card className="border-dashed">
-          <CardContent className="py-12 text-center">
+          <CardContent className="py-10 text-center">
             <FolderHeart className="mx-auto mb-3 size-10 text-muted-foreground/30" />
-            <p className="text-muted-foreground">コレクションを作成して、アイデアを整理しましょう</p>
-            <p className="mt-1 text-sm text-muted-foreground">アイデア詳細ページからコレクションに追加できます</p>
-            <Link href="/feed" className="mt-3 inline-block">
-              <Button variant="outline" size="sm">アイデアを探す</Button>
+            <p className="font-medium">コレクションがありません</p>
+            <ol className="mx-auto mt-4 max-w-xs space-y-2 text-left text-sm text-muted-foreground">
+              <li className="flex items-start gap-2">
+                <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">1</span>
+                上の入力欄にコレクション名を入力して「作成」
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">2</span>
+                アイデア詳細ページの「コレクションに追加」で登録
+              </li>
+            </ol>
+            <Link href="/feed" className="mt-5 inline-block">
+              <Button size="sm" className="gap-1.5">
+                アイデアを探す <ArrowRight className="size-3.5" />
+              </Button>
             </Link>
           </CardContent>
         </Card>
