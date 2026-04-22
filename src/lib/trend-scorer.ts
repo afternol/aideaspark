@@ -1,5 +1,6 @@
+import Anthropic from "@anthropic-ai/sdk";
 import { prisma } from "./prisma";
-import { CATEGORIES } from "./constants";
+import { CATEGORIES, CATEGORY_GROUPS } from "./constants";
 
 export interface TrendResult {
   id: string;
@@ -13,7 +14,8 @@ export interface TrendResult {
   rank: number;
 }
 
-// Expert-curated base scores reflecting 2026 market reality
+// ── ハードコードのフォールバック値（Claudeスコア未取得時のみ使用）──────────
+
 const EXPERT_SCORES: Record<string, { base: number; momentum: "rising" | "stable" | "declining" }> = {
   "AI/ML": { base: 88, momentum: "rising" },
   "生成AI": { base: 95, momentum: "rising" },
@@ -105,8 +107,7 @@ const EXPERT_SCORES: Record<string, { base: number; momentum: "rising" | "stable
   "ノーコード・ローコード": { base: 70, momentum: "stable" },
 };
 
-// ── ユーザー行動からカテゴリ別スコア算出（0-100）────────────────────────────
-// views×1 + bookmarks×10 + declarations×50 + reactions×3 を集計して正規化
+// ── ユーザー行動スコア算出（0-100）──────────────────────────────────────────
 
 export async function computePlatformScores(): Promise<Map<string, number>> {
   const ideas = await prisma.idea.findMany({
@@ -136,18 +137,98 @@ export async function computePlatformScores(): Promise<Map<string, number>> {
   return normalized;
 }
 
-// ── 3軸ブレンド: データがある軸だけ使い、ないものに引っ張られない ──────────
-// expert 40% + platform 30% + google_trends 30%（データある軸で重みを再正規化）
+// ── Claude web_search でカテゴリ別 AI スコアを更新（グループ単位で処理）──
+
+export async function refreshExpertScoresWithClaude(): Promise<{ updated: number; errors: number }> {
+  const anthropic = new Anthropic();
+  const now = new Date();
+  let updated = 0;
+  let errors = 0;
+
+  for (const group of CATEGORY_GROUPS) {
+    const cats = CATEGORIES.filter((c) => c.group === group);
+    const catList = cats.map((c) => c.label).join("、");
+
+    try {
+      const response = await anthropic.messages.create({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 2000,
+        tools: [{ type: "web_search_20250305" as any, name: "web_search" }],
+        messages: [{
+          role: "user",
+          content: `2026年現在の日本スタートアップ・新規事業市場において、以下のビジネスカテゴリの注目度を調査してください。
+
+グループ: ${group}
+カテゴリ一覧: ${catList}
+
+各カテゴリについて最新ニュース・投資動向・スタートアップ数・市場規模を参照し、
+- score: 0〜100（100が最もホット）
+- momentum: rising（上昇中）/ stable（横ばい）/ declining（下降中）
+
+を判定してください。必ずJSON形式のみで返答してください。余分なテキスト不要。
+
+\`\`\`json
+{
+  "カテゴリ名": { "score": 数値, "momentum": "rising|stable|declining" },
+  ...
+}
+\`\`\``,
+        }],
+      });
+
+      const text = response.content
+        .filter((b: any) => b.type === "text")
+        .map((b: any) => b.text)
+        .join("");
+
+      const cleaned = text.replace(/```(?:json)?\s*/g, "").replace(/```\s*/g, "").trim();
+      let data: Record<string, { score: number; momentum: string }>;
+      try {
+        data = JSON.parse(cleaned);
+      } catch {
+        const match = cleaned.match(/\{[\s\S]*\}/);
+        if (!match) throw new Error("JSON parse failed");
+        data = JSON.parse(match[0]);
+      }
+
+      for (const cat of cats) {
+        const result = data[cat.label];
+        if (!result) continue;
+        const score    = Math.max(10, Math.min(100, Math.round(Number(result.score))));
+        const momentum = ["rising", "stable", "declining"].includes(result.momentum)
+          ? result.momentum : "stable";
+
+        await prisma.trendCache.updateMany({
+          where: { keyword: cat.value },
+          data:  { aiScore: score, aiMomentum: momentum, aiUpdatedAt: now },
+        });
+        updated++;
+      }
+    } catch (e) {
+      console.error(`[refreshExpertScores] group=${group}`, e);
+      errors++;
+    }
+
+    await new Promise((r) => setTimeout(r, 1500));
+  }
+
+  return { updated, errors };
+}
+
+// ── ブレンド: AI/ハードコード 40% + ユーザー行動 30% + Google Trends 30% ──
+// データのない軸は重みを再正規化（引っ張られない）
 
 function blendAllScores(
-  expert: number,
+  expertBase: number,
+  aiScore: number,
   platformScore: number,
   gtData: { interest: number; momentum: number } | null,
 ): number {
-  const gtSignal = gtData ? Math.min(100, gtData.interest * 1.5) : null;
-  const gtBonus  = gtData ? Math.max(-10, Math.min(10, gtData.momentum * 0.1)) : 0;
+  const baseScore = aiScore > 0 ? aiScore : expertBase;
+  const gtSignal  = gtData ? Math.min(100, gtData.interest * 1.5) : null;
+  const gtBonus   = gtData ? Math.max(-10, Math.min(10, gtData.momentum * 0.1)) : 0;
 
-  const sources: { weight: number; value: number }[] = [{ weight: 0.4, value: expert }];
+  const sources: { weight: number; value: number }[] = [{ weight: 0.4, value: baseScore }];
   if (platformScore > 0) sources.push({ weight: 0.3, value: platformScore });
   if (gtSignal !== null) sources.push({ weight: 0.3, value: gtSignal + gtBonus });
 
@@ -157,18 +238,18 @@ function blendAllScores(
 }
 
 function blendMomentum(
-  expert: "rising" | "stable" | "declining",
+  base: "rising" | "stable" | "declining",
   gtMomentum: number | null,
 ): "rising" | "stable" | "declining" {
-  if (gtMomentum === null) return expert;
+  if (gtMomentum === null) return base;
   if (gtMomentum > 50) return "rising";
   if (gtMomentum < -30) return "declining";
-  if (gtMomentum > 30 && expert === "declining") return "stable";
-  if (gtMomentum < -30 && expert === "rising") return "stable";
-  return expert;
+  if (gtMomentum > 30 && base === "declining") return "stable";
+  if (gtMomentum < -30 && base === "rising") return "stable";
+  return base;
 }
 
-// ── メイン: キャッシュ1クエリで即返却 ──────────────────────────────────────
+// ── メイン: キャッシュ1クエリで即返却、スコアはコンポーネントから都度計算 ──
 
 export async function scoreAllCategories(): Promise<TrendResult[]> {
   const cached = await prisma.trendCache.findMany();
@@ -178,19 +259,36 @@ export async function scoreAllCategories(): Promise<TrendResult[]> {
     const expert = EXPERT_SCORES[cat.value] ?? { base: 50, momentum: "stable" as const };
     const entry  = cacheMap.get(cat.value);
 
-    const score    = entry ? Math.max(10, entry.totalScore) : expert.base;
-    const momentum = (entry?.momentum as TrendResult["momentum"]) ?? expert.momentum;
+    let score: number;
+    let momentum: TrendResult["momentum"];
+
+    if (entry) {
+      const gtData = entry.gtInterest > 0
+        ? { interest: entry.gtInterest, momentum: entry.gtMomentum }
+        : null;
+      score = blendAllScores(expert.base, entry.aiScore, entry.platformScore, gtData);
+
+      const baseMomentum = (
+        entry.aiMomentum && entry.aiMomentum !== ""
+          ? entry.aiMomentum
+          : entry.momentum
+      ) as TrendResult["momentum"];
+      momentum = blendMomentum(baseMomentum, gtData?.momentum ?? null);
+    } else {
+      score    = expert.base;
+      momentum = expert.momentum;
+    }
 
     return {
-      id:          `tc-${String(i + 1).padStart(3, "0")}`,
-      keyword:     cat.label,
-      label:       cat.label,
-      group:       cat.group,
+      id:         `tc-${String(i + 1).padStart(3, "0")}`,
+      keyword:    cat.label,
+      label:      cat.label,
+      group:      cat.group,
       score,
       momentum,
-      gtInterest:  entry?.gtInterest  ?? 0,
-      gtMomentum:  entry?.gtMomentum  ?? 0,
-      rank:        0,
+      gtInterest: entry?.gtInterest ?? 0,
+      gtMomentum: entry?.gtMomentum ?? 0,
+      rank:       0,
     };
   });
 
@@ -199,7 +297,7 @@ export async function scoreAllCategories(): Promise<TrendResult[]> {
   return results;
 }
 
-// ── キャッシュ更新: Google Trends + ユーザー行動（cron専用） ─────────────────
+// ── Google Trends キャッシュ更新（cron専用）───────────────────────────────
 
 export async function refreshTrendsCache(): Promise<{ updated: number; skipped: number; errors: number }> {
   const googleTrends = (await import("google-trends-api")).default;
@@ -207,7 +305,6 @@ export async function refreshTrendsCache(): Promise<{ updated: number; skipped: 
   const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
   const now = new Date();
 
-  // ユーザー行動スコアを先に一括取得
   const platformScores = await computePlatformScores();
 
   let updated = 0;
@@ -216,29 +313,22 @@ export async function refreshTrendsCache(): Promise<{ updated: number; skipped: 
 
   for (let i = 0; i < CATEGORIES.length; i++) {
     const cat      = CATEGORIES[i];
-    const expert   = EXPERT_SCORES[cat.value] ?? { base: 50, momentum: "stable" as const };
     const platform = platformScores.get(cat.value) ?? 0;
 
     const cached  = await prisma.trendCache.findUnique({ where: { keyword: cat.value } });
     const expired = !cached || (now.getTime() - new Date(cached.fetchedAt).getTime()) > CACHE_TTL_MS;
 
     if (!expired) {
-      // キャッシュ有効 → platformScore だけ更新（行動データは常に最新にする）
       if (platform > 0) {
-        const newScore = blendAllScores(expert.base, platform, {
-          interest: cached.gtInterest,
-          momentum: cached.gtMomentum,
-        });
         await prisma.trendCache.update({
           where: { keyword: cat.value },
-          data: { platformScore: platform, totalScore: newScore, updatedAt: now },
+          data:  { platformScore: platform, updatedAt: now },
         });
       }
       skipped++;
       continue;
     }
 
-    // キャッシュ期限切れ → Google Trends を取得して全軸ブレンド
     let gtData: { interest: number; momentum: number } | null = null;
     try {
       const sixMonthsAgo = new Date(now);
@@ -253,17 +343,15 @@ export async function refreshTrendsCache(): Promise<{ updated: number; skipped: 
         const wSum     = recent.reduce((s, v, j) => s + v * (weights[j] ?? 1), 0);
         const wTotal   = recent.reduce((s, _, j) => s + (weights[j] ?? 1), 0);
         const interest = Math.round(wSum / wTotal);
-
         const third    = Math.floor(values.length / 3);
         const avgFirst = values.slice(0, third).reduce((a, b) => a + b, 0) / (third || 1);
         const avgLast  = values.slice(-third).reduce((a, b) => a + b, 0)  / (third || 1);
         const momentum = avgFirst > 0 ? Math.round(((avgLast - avgFirst) / avgFirst) * 100) : 0;
         gtData = { interest, momentum };
       }
-    } catch { /* Google Trends失敗 → gtData = null のまま続行 */ }
+    } catch { /* silent fail */ }
 
-    const score    = blendAllScores(expert.base, platform, gtData);
-    const momentum = blendMomentum(expert.momentum, gtData?.momentum ?? null);
+    const expert = EXPERT_SCORES[cat.value] ?? { base: 50, momentum: "stable" as const };
 
     await prisma.trendCache.upsert({
       where:  { keyword: cat.value },
@@ -271,8 +359,6 @@ export async function refreshTrendsCache(): Promise<{ updated: number; skipped: 
         gtInterest:    gtData?.interest  ?? cached?.gtInterest  ?? 0,
         gtMomentum:    gtData?.momentum  ?? cached?.gtMomentum  ?? 0,
         platformScore: platform,
-        totalScore:    score,
-        momentum,
         fetchedAt:     now,
         updatedAt:     now,
       },
@@ -285,8 +371,8 @@ export async function refreshTrendsCache(): Promise<{ updated: number; skipped: 
         gtInterest:    gtData?.interest  ?? 0,
         gtMomentum:    gtData?.momentum  ?? 0,
         platformScore: platform > 0 ? platform : expert.base,
-        totalScore:    score,
-        momentum,
+        totalScore:    expert.base,
+        momentum:      expert.momentum,
         fetchedAt:     now,
       },
     });

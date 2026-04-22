@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "TrendCache" ADD COLUMN     "aiMomentum" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "aiScore" DOUBLE PRECISION NOT NULL DEFAULT 0,
+ADD COLUMN     "aiUpdatedAt" TIMESTAMP(3);

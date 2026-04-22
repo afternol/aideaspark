@@ -238,6 +238,9 @@ model TrendCache {
   gtInterest    Float    @default(0)
   gtMomentum    Float    @default(0)
   platformScore Float    @default(0)
+  aiScore       Float    @default(0)  // Claude web_search で算出した最新スコア
+  aiMomentum    String   @default("") // Claude が判定したモメンタム（空=""未取得）
+  aiUpdatedAt   DateTime?             // Claude スコア最終更新日時
   totalScore    Float    @default(0)
   momentum      String   @default("stable") // rising | stable | declining
   fetchedAt     DateTime @default(now())

@@ -3,6 +3,10 @@
     {
       "path": "/aideaspark/api/cron/trends",
       "schedule": "0 17 * * *"
+    },
+    {
+      "path": "/aideaspark/api/cron/trends?mode=ai",
+      "schedule": "0 18 * * 0"
     }
   ]
 }
