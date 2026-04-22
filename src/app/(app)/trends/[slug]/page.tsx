@@ -93,10 +93,7 @@ export default function TrendDetailPage({ params }: { params: Promise<{ slug: st
         <Link href="/trends" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="size-4" />トレンドレーダーに戻る
         </Link>
-        <div className="flex flex-col items-center justify-center gap-3 py-24">
-          <Loader2 className="size-8 animate-spin text-primary" />
-          <p className="text-base text-muted-foreground">AIがウェブ検索でリサーチ中です。初回は30〜60秒かかります。</p>
-        </div>
+        <div className="py-24" />
       </div>
     );
   }
