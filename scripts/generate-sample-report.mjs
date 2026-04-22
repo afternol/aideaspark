@@ -28,27 +28,44 @@ function extractPublisher(url) {
   }
 }
 
+function dateRange() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = now.getMonth() + 1;
+  const from = new Date(now);
+  from.setMonth(from.getMonth() - 3);
+  const fy = from.getFullYear();
+  const fm = from.getMonth() + 1;
+  return {
+    today:       `${y}年${m}月`,
+    threeMonths: `${fy}年${fm}月〜${y}年${m}月`,
+    cutoff:      `${fy}年${fm}月`,
+  };
+}
+
 async function generateReport(keyword, group, score, momentum) {
   const momentumJa = momentum === "rising" ? "上昇中" : momentum === "declining" ? "下降中" : "横ばい";
-  console.log(`Phase1: web_search 開始 (${keyword})...`);
+  const { today, threeMonths, cutoff } = dateRange();
+
+  console.log(`Phase1: web_search 開始 (${keyword})... 対象期間: ${threeMonths}`);
 
   const phase1 = await anthropic.messages.create({
     model: "claude-sonnet-4-20250514",
-    max_tokens: 3000,
+    max_tokens: 4000,
     tools: [{ type: "web_search_20250305", name: "web_search" }],
     messages: [{
       role: "user",
-      content: `2025〜2026年の日本市場における「${keyword}」（${group}分野）の最新動向を徹底的に調査してください。
+      content: `本日は${today}です。日本市場における「${keyword}」（${group}分野）について、**直近3ヶ月（${threeMonths}）を中心**とした最新情報を徹底的に調査してください。
 
-以下の観点で具体的な情報を収集してください：
-1. **大きなニュース・出来事**（2024年後半〜2026年、具体的な企業名・数値・日付付き）
-2. **主要プレイヤーの動向**（資金調達ラウンド・金額、M&A、新規参入、撤退、製品リリース）
-3. **市場規模・成長率**（調査会社のレポート、政府統計など信頼できる数値）
-4. **規制・法改正・政策の動き**（施行済み・予定含む）
-5. **海外での動向が日本市場に与える影響**
-6. **投資・VC動向**（主要ファンド・調達規模・注目スタートアップ）
+## 優先して収集する情報（${threeMonths}のもの）
+1. **直近ニュース・出来事**（企業名・金額・日付を必ず含める。古いものより新しいものを優先）
+2. **主要プレイヤーの最新動向**（資金調達・製品リリース・M&A・提携など、できるだけ直近のもの）
+3. **市場規模・成長率**（最新の調査レポートや統計、発行年月を明記）
+4. **規制・政策の最新動向**（直近の法改正・施行・発表など）
+5. **海外最新動向と日本への影響**（直近3ヶ月の海外主要プレイヤーの動き）
+6. **投資・VC動向**（直近の大型調達・ファンド組成・EXIT）
 
-できる限り具体的な固有名詞・数値・日付を含む情報を収集してください。`,
+古い情報（1年以上前）は除外し、できる限り${threeMonths}の情報を中心に収集してください。`,
     }],
   });
 
@@ -56,7 +73,7 @@ async function generateReport(keyword, group, score, momentum) {
   for (const block of phase1.content) {
     if (block.type === "web_search_tool_result") {
       for (const r of block.content ?? []) {
-        if (r.type === "web_search_result" && r.url && rawSources.length < 8) {
+        if (r.type === "web_search_result" && r.url && rawSources.length < 10) {
           rawSources.push({
             num: rawSources.length + 1,
             title: r.title || "記事",
@@ -78,12 +95,14 @@ async function generateReport(keyword, group, score, momentum) {
     model: "claude-sonnet-4-20250514",
     max_tokens: 4000,
     system: `あなたは日本のスタートアップ・ビジネストレンドの専門アナリストです。
-調査で収集したファクトのみを使い、推測や一般論は含めないでください。
+本日は${today}です。
+調査で収集したファクトのみを使い、推測や一般論は絶対に含めないでください。
 情報を引用する際は必ず [番号] を文中の該当箇所に付与してください。
+古い情報（1年以上前）は使用しないでください。
 必ずJSONのみを返してください。`,
     messages: [{
       role: "user",
-      content: `以下の調査結果をもとに、「${keyword}」（スコア: ${score}点・${momentumJa}）の詳細トレンドレポートをJSONで作成してください。
+      content: `以下の調査結果をもとに、「${keyword}」（スコア: ${score}点・${momentumJa}）のトレンドレポートをJSONで作成してください。
 
 ## 調査結果
 ${phase1Text}
@@ -91,94 +110,42 @@ ${phase1Text}
 ## 参照番号リスト（引用時はこの番号を使うこと）
 ${sourceListText}
 
-## ルール
+## 重要ルール
+- **recentNewsは${threeMonths}の期間内のニュースのみ掲載**。${cutoff}より前のニュースは含めない
 - 事実・数値・固有名詞を述べる箇所には必ず [番号] を付与する
-- 引用番号は文末ではなく、その情報の直後に置く（例: 「〇〇社は2025年10月に50億円を調達[1]し、」）
+- 引用番号は情報の直後に置く（例:「〇〇社が50億円を調達[1]し、」）
 - 推測・一般論には引用番号を付けない
+- 全セクションで最新情報（直近のもの）を優先する
 - 使用した参照番号だけを sources に含める
-- 各フィールドはできるだけ具体的・詳細に記述すること
 
 ## 出力フォーマット（JSONのみ）
 \`\`\`json
 {
-  "summary": "3〜4文。数値・企業名・時期を含め、引用箇所に [番号] を付与。トレンドの全体像が伝わるように。",
-  "whatIsHappening": [
-    "ファクト1（企業名/金額/日付を含む最新動向）[1]",
-    "ファクト2 [2]",
-    "ファクト3 [3]",
-    "ファクト4 [4]",
-    "ファクト5 [5]",
-    "ファクト6（任意）[6]"
-  ],
+  "summary": "3〜4文。${today}時点の最新状況を中心に、数値・企業名・時期を含め [番号] を付与。",
   "recentNews": [
     {
-      "date": "2026年4月",
-      "headline": "ニュース見出し（30字以内）",
-      "detail": "詳細説明。企業名・金額・影響を含む2〜3文。[番号]を付与。"
-    },
-    {
-      "date": "2026年3月",
-      "headline": "ニュース見出し",
-      "detail": "詳細説明 [2]"
-    },
-    {
-      "date": "2026年2月",
-      "headline": "ニュース見出し",
-      "detail": "詳細説明 [3]"
-    },
-    {
-      "date": "2026年1月",
-      "headline": "ニュース見出し",
-      "detail": "詳細説明 [4]"
-    },
-    {
-      "date": "2025年12月",
-      "headline": "ニュース見出し",
-      "detail": "詳細説明 [5]"
-    },
-    {
-      "date": "2025年11月",
-      "headline": "ニュース見出し",
-      "detail": "詳細説明 [6]"
-    },
-    {
-      "date": "2025年10月",
-      "headline": "ニュース見出し",
-      "detail": "詳細説明 [7]"
-    },
-    {
-      "date": "2025年9月",
-      "headline": "ニュース見出し",
-      "detail": "詳細説明 [8]"
-    },
-    {
-      "date": "2025年8月",
-      "headline": "ニュース見出し（任意）",
-      "detail": "詳細説明 [9]"
-    },
-    {
-      "date": "2025年7月",
-      "headline": "ニュース見出し（任意）",
-      "detail": "詳細説明 [10]"
+      "date": "${today}（または直近の正確な年月）",
+      "headline": "見出し（30字以内・具体的な企業名や数値を含む）",
+      "detail": "詳細2〜3文。企業名・金額・影響を含む。[番号]付与。"
     }
   ],
-  "investmentTrends": "2024〜2026年の投資・資金調達・M&A動向を3〜4文で。金額・ラウンド・投資家名を含む。[番号]付与。",
-  "globalContext": "海外（米国・欧州・中国など）の動向と日本市場への影響を3〜4文で。具体的企業・政策・数値を含む。[番号]付与。",
+  "investmentTrends": "直近の投資・資金調達・M&A動向を3〜4文で。金額・ラウンド・投資家名・日付を含む。[番号]付与。",
+  "globalContext": "海外（米国・欧州・中国など）の直近動向と日本市場への影響を3〜4文で。具体的企業・政策・数値を含む。[番号]付与。",
   "keyPlayers": [
-    "企業名A: 具体的な動向（資金調達額・サービス名・ユーザー数など）[1]",
-    "企業名B: 動向 [2]",
+    "企業名A: 直近の動向（資金調達額・サービス名・ユーザー数・日付）[1]",
+    "企業名B: 直近の動向 [2]",
     "企業名C: 動向 [3]",
     "企業名D: 動向（任意）[4]",
     "企業名E: 動向（任意）[5]"
   ],
-  "marketSize": "市場規模・成長率・予測値（調査会社名・発行年を含む）[番号]。なければ '公開データなし'",
+  "marketSize": "最新の市場規模・成長率・予測値（調査会社名・発行年月を必ず含む）[番号]。なければ '公開データなし'",
   "outlook": "今後12〜18ヶ月の見通しを2〜3文で。具体的なマイルストーンや注目点を含める。",
   "sources": [
-    {"num": 1, "title": "記事タイトル", "publisher": "出典元ドメイン", "url": "https://..."},
-    {"num": 2, "title": "記事タイトル", "publisher": "出典元ドメイン", "url": "https://..."}
+    {"num": 1, "title": "記事タイトル", "publisher": "出典元ドメイン", "url": "https://..."}
   ]
 }
-\`\`\``,
+\`\`\`
+※ recentNewsは${threeMonths}のものだけ。件数は調査で見つかった分だけ（最大10件）。古いニュースは絶対に含めない。`,
     }],
   });
 
@@ -205,7 +172,7 @@ ${sourceListText}
 
   return {
     summary:          String(data.summary ?? ""),
-    whatIsHappening:  Array.isArray(data.whatIsHappening) ? data.whatIsHappening : [],
+    whatIsHappening:  [],
     recentNews,
     investmentTrends: String(data.investmentTrends ?? ""),
     globalContext:    String(data.globalContext ?? ""),
