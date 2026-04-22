@@ -235,6 +235,8 @@ model TrendCache {
   category      String
   description   String
   relatedIdeaIds Json    // array
+  slug          String?  @unique
+  report        Json?
   gtInterest    Float    @default(0)
   gtMomentum    Float    @default(0)
   platformScore Float    @default(0)

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   TrendingUp,
   ArrowUpRight,
@@ -27,6 +28,7 @@ interface TrendResult {
   gtInterest: number;
   gtMomentum: number;
   rank: number;
+  slug?: string;
 }
 
 const momentumConfig = {
@@ -276,11 +278,10 @@ export default function TrendsPage() {
           {filtered.map((trend) => {
             const cfg = momentumConfig[trend.momentum];
             const MomentumIcon = cfg.icon;
-
-            return (
+            const inner = (
               <div
                 key={trend.id}
-                className="flex items-center gap-3 rounded-lg border px-4 py-3 transition-colors hover:bg-muted/50"
+                className="flex items-center gap-3 rounded-lg border px-4 py-3 transition-colors hover:bg-muted/50 cursor-pointer"
               >
                 {/* Rank */}
                 <span className={cn(
@@ -317,6 +318,9 @@ export default function TrendsPage() {
                 </div>
               </div>
             );
+            return trend.slug
+              ? <Link key={trend.id} href={`/trends/${trend.slug}`}>{inner}</Link>
+              : <div key={trend.id}>{inner}</div>;
           })}
         </div>
       </div>

@@ -12,6 +12,7 @@ export interface TrendResult {
   gtInterest: number;
   gtMomentum: number;
   rank: number;
+  slug: string | null;
 }
 
 // ── ハードコードのフォールバック値（Claudeスコア未取得時のみ使用）──────────
@@ -289,6 +290,7 @@ export async function scoreAllCategories(): Promise<TrendResult[]> {
       gtInterest: entry?.gtInterest ?? 0,
       gtMomentum: entry?.gtMomentum ?? 0,
       rank:       0,
+      slug:       entry?.slug ?? null,
     };
   });
 
