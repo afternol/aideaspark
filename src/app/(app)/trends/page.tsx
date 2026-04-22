@@ -61,10 +61,16 @@ export default function TrendsPage() {
   const [loading, setLoading] = useState(true);
   const [groupFilter, setGroupFilter] = useState<string>("all");
 
+  const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
   useEffect(() => {
-    fetch("/api/trends")
+    fetch(`${BASE_PATH}/api/trends`)
       .then((r) => r.json())
-      .then((data) => { if (Array.isArray(data)) setTrends(data); })
+      .then((data) => {
+        if (Array.isArray(data)) setTrends(data);
+        else console.error("[trends] unexpected response:", data);
+      })
+      .catch((e) => console.error("[trends] fetch error:", e))
       .finally(() => setLoading(false));
   }, []);
 
