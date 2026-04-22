@@ -1,1 +1,8 @@
-{}
+{
+  "crons": [
+    {
+      "path": "/aideaspark/api/cron/trends",
+      "schedule": "0 17 * * *"
+    }
+  ]
+}
