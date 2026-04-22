@@ -1,4 +1,3 @@
-import googleTrends from "google-trends-api";
 import { prisma } from "./prisma";
 import { CATEGORIES } from "./constants";
 
@@ -14,12 +13,9 @@ export interface TrendResult {
   rank: number;
 }
 
-const CACHE_TTL_HOURS = 24;
-
 // Expert-curated base scores reflecting 2026 market reality
-// These serve as the baseline; Google Trends data refines them when available
 const EXPERT_SCORES: Record<string, { base: number; momentum: "rising" | "stable" | "declining" }> = {
-  // AI・データ — hottest sector
+  // AI・データ
   "AI/ML": { base: 88, momentum: "rising" },
   "生成AI": { base: 95, momentum: "rising" },
   "AIエージェント": { base: 93, momentum: "rising" },
@@ -128,127 +124,113 @@ const EXPERT_SCORES: Record<string, { base: number; momentum: "rising" | "stable
   "ノーコード・ローコード": { base: 70, momentum: "stable" },
 };
 
-async function fetchGoogleTrends(keyword: string): Promise<{ interest: number; momentum: number } | null> {
-  try {
-    const now = new Date();
-    const sixMonthsAgo = new Date(now);
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-
-    const result = await googleTrends.interestOverTime({
-      keyword,
-      startTime: sixMonthsAgo,
-      endTime: now,
-      geo: "JP",
-    });
-
-    const parsed = JSON.parse(result);
-    const timeline = parsed.default?.timelineData || [];
-    if (timeline.length === 0) return null;
-
-    const values: number[] = timeline.map((t: any) => t.value[0] as number);
-    const weights = [3, 2.5, 2, 1.5];
-    const recent = values.slice(-4);
-    const wSum = recent.reduce((s, v, i) => s + v * (weights[i] || 1), 0);
-    const wTotal = recent.reduce((s, _, i) => s + (weights[i] || 1), 0);
-    const interest = Math.round(wSum / wTotal);
-
-    const third = Math.floor(values.length / 3);
-    const first = values.slice(0, third);
-    const last = values.slice(-third);
-    const avgFirst = first.reduce((a, b) => a + b, 0) / (first.length || 1);
-    const avgLast = last.reduce((a, b) => a + b, 0) / (last.length || 1);
-    const momentum = avgFirst > 0 ? Math.round(((avgLast - avgFirst) / avgFirst) * 100) : 0;
-
-    return { interest, momentum };
-  } catch {
-    return null; // Silently fail, use expert score
-  }
-}
-
-function blendScore(expert: number, gtData: { interest: number; momentum: number } | null): number {
-  if (!gtData) return expert;
-
-  // Blend: 60% expert + 40% Google Trends signal
-  const gtSignal = Math.min(100, gtData.interest * 1.5);
-  const momentumBonus = Math.max(-10, Math.min(10, gtData.momentum * 0.1));
-
-  return Math.round(expert * 0.6 + gtSignal * 0.4 + momentumBonus);
-}
-
-function blendMomentum(
-  expert: "rising" | "stable" | "declining",
-  gtMomentum: number | null
-): "rising" | "stable" | "declining" {
-  if (gtMomentum === null) return expert;
-  // If Google Trends strongly disagrees, override
-  if (gtMomentum > 30 && expert === "declining") return "stable";
-  if (gtMomentum < -30 && expert === "rising") return "stable";
-  if (gtMomentum > 50) return "rising";
-  if (gtMomentum < -30) return "declining";
-  return expert;
-}
+// ── メイン: キャッシュ優先、なければエキスパートスコアで即時返却 ──────────
 
 export async function scoreAllCategories(): Promise<TrendResult[]> {
-  const results: TrendResult[] = [];
+  // 全キャッシュを1クエリで取得
+  const cached = await prisma.trendCache.findMany();
+  const cacheMap = new Map(cached.map((c) => [c.keyword, c]));
 
-  for (let i = 0; i < CATEGORIES.length; i++) {
-    const cat = CATEGORIES[i];
-    const expert = EXPERT_SCORES[cat.value] || { base: 50, momentum: "stable" as const };
+  const results: TrendResult[] = CATEGORIES.map((cat, i) => {
+    const expert = EXPERT_SCORES[cat.value] ?? { base: 50, momentum: "stable" as const };
+    const entry = cacheMap.get(cat.value);
 
-    const cached = await prisma.trendCache.findUnique({ where: { keyword: cat.value } });
-    const now = new Date();
-    const cacheExpired = !cached ||
-      (now.getTime() - new Date(cached.fetchedAt).getTime()) > CACHE_TTL_HOURS * 60 * 60 * 1000;
+    const score = entry ? Math.max(10, entry.totalScore) : expert.base;
+    const momentum = (entry?.momentum as TrendResult["momentum"]) ?? expert.momentum;
 
-    let gtInterest = cached?.gtInterest ?? 0;
-    let gtMomentum = cached?.gtMomentum ?? 0;
-    let score = expert.base;
-    let momentum = expert.momentum;
-
-    if (cacheExpired) {
-      const gtData = await fetchGoogleTrends(cat.label);
-
-      if (gtData) {
-        gtInterest = gtData.interest;
-        gtMomentum = gtData.momentum;
-        score = blendScore(expert.base, gtData);
-        momentum = blendMomentum(expert.momentum, gtData.momentum);
-      }
-
-      score = Math.max(10, Math.min(100, score));
-
-      await prisma.trendCache.upsert({
-        where: { keyword: cat.value },
-        update: { gtInterest, gtMomentum, totalScore: score, momentum, fetchedAt: now, platformScore: expert.base, category: cat.group, description: cat.label, relatedIdeaIds: "[]" },
-        create: { id: `tc-${String(i + 1).padStart(3, "0")}`, keyword: cat.value, category: cat.group, description: cat.label, relatedIdeaIds: "[]", gtInterest, gtMomentum, platformScore: expert.base, totalScore: score, momentum, fetchedAt: now },
-      });
-
-      // Rate limit
-      if (gtInterest > 0) {
-        await new Promise((r) => setTimeout(r, 3000));
-        if ((i + 1) % 10 === 0) await new Promise((r) => setTimeout(r, 10000));
-      }
-    } else {
-      score = Math.max(10, cached.totalScore);
-      momentum = cached.momentum as typeof momentum;
-      gtInterest = cached.gtInterest;
-      gtMomentum = cached.gtMomentum;
-    }
-
-    results.push({
+    return {
       id: `tc-${String(i + 1).padStart(3, "0")}`,
       keyword: cat.label,
       label: cat.label,
       group: cat.group,
       score,
       momentum,
-      gtInterest,
-      gtMomentum,
+      gtInterest: entry?.gtInterest ?? 0,
+      gtMomentum: entry?.gtMomentum ?? 0,
       rank: 0,
-    });
-  }
+    };
+  });
 
   results.sort((a, b) => b.score - a.score);
   results.forEach((r, i) => { r.rank = i + 1; });
   return results;
+}
+
+// ── キャッシュ更新: Google Trends APIを叩く（cron専用） ──────────────────
+
+export async function refreshTrendsCache(): Promise<{ updated: number; errors: number }> {
+  // Dynamic import to avoid bundling google-trends-api into edge runtime
+  const googleTrends = (await import("google-trends-api")).default;
+
+  const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+  const now = new Date();
+  let updated = 0;
+  let errors = 0;
+
+  for (let i = 0; i < CATEGORIES.length; i++) {
+    const cat = CATEGORIES[i];
+    const expert = EXPERT_SCORES[cat.value] ?? { base: 50, momentum: "stable" as const };
+
+    const cached = await prisma.trendCache.findUnique({ where: { keyword: cat.value } });
+    const expired = !cached || (now.getTime() - new Date(cached.fetchedAt).getTime()) > CACHE_TTL_MS;
+    if (!expired) continue;
+
+    try {
+      const sixMonthsAgo = new Date(now);
+      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+      const raw = await googleTrends.interestOverTime({
+        keyword: cat.label,
+        startTime: sixMonthsAgo,
+        endTime: now,
+        geo: "JP",
+      });
+
+      const timeline = JSON.parse(raw).default?.timelineData ?? [];
+      if (timeline.length === 0) throw new Error("empty timeline");
+
+      const values: number[] = timeline.map((t: any) => t.value[0] as number);
+      const recent = values.slice(-4);
+      const weights = [3, 2.5, 2, 1.5];
+      const wSum = recent.reduce((s, v, j) => s + v * (weights[j] ?? 1), 0);
+      const wTotal = recent.reduce((s, _, j) => s + (weights[j] ?? 1), 0);
+      const gtInterest = Math.round(wSum / wTotal);
+
+      const third = Math.floor(values.length / 3);
+      const avgFirst = values.slice(0, third).reduce((a, b) => a + b, 0) / (third || 1);
+      const avgLast = values.slice(-third).reduce((a, b) => a + b, 0) / (third || 1);
+      const gtMomentumVal = avgFirst > 0 ? Math.round(((avgLast - avgFirst) / avgFirst) * 100) : 0;
+
+      const gtSignal = Math.min(100, gtInterest * 1.5);
+      const bonus = Math.max(-10, Math.min(10, gtMomentumVal * 0.1));
+      const score = Math.max(10, Math.min(100, Math.round(expert.base * 0.6 + gtSignal * 0.4 + bonus)));
+
+      let momentum: "rising" | "stable" | "declining" = expert.momentum;
+      if (gtMomentumVal > 50) momentum = "rising";
+      else if (gtMomentumVal < -30) momentum = "declining";
+      else if (gtMomentumVal > 30 && expert.momentum === "declining") momentum = "stable";
+      else if (gtMomentumVal < -30 && expert.momentum === "rising") momentum = "stable";
+
+      await prisma.trendCache.upsert({
+        where: { keyword: cat.value },
+        update: { gtInterest, gtMomentum: gtMomentumVal, totalScore: score, momentum, fetchedAt: now, platformScore: expert.base, category: cat.group, description: cat.label, relatedIdeaIds: "[]" },
+        create: { id: `tc-${String(i + 1).padStart(3, "0")}`, keyword: cat.value, category: cat.group, description: cat.label, relatedIdeaIds: "[]", gtInterest, gtMomentum: gtMomentumVal, platformScore: expert.base, totalScore: score, momentum, fetchedAt: now },
+      });
+
+      updated++;
+      // Rate limit: 3秒待機、10件ごとに追加10秒
+      await new Promise((r) => setTimeout(r, 3000));
+      if ((i + 1) % 10 === 0) await new Promise((r) => setTimeout(r, 10000));
+    } catch {
+      // Google Trends失敗時はエキスパートスコアで上書き保存
+      await prisma.trendCache.upsert({
+        where: { keyword: cat.value },
+        update: { totalScore: expert.base, momentum: expert.momentum, fetchedAt: now, platformScore: expert.base, category: cat.group, description: cat.label, relatedIdeaIds: "[]" },
+        create: { id: `tc-${String(i + 1).padStart(3, "0")}`, keyword: cat.value, category: cat.group, description: cat.label, relatedIdeaIds: "[]", gtInterest: 0, gtMomentum: 0, platformScore: expert.base, totalScore: expert.base, momentum: expert.momentum, fetchedAt: now },
+      });
+      errors++;
+    }
+  }
+
+  return { updated, errors };
 }
