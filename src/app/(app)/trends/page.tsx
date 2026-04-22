@@ -3,15 +3,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
-  TrendingUp,
   ArrowUpRight,
   ArrowRight,
   ArrowDownRight,
   Loader2,
   Flame,
-  BrainCircuit,
-  Users,
-  BarChart2,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -101,49 +97,6 @@ export default function TrendsPage() {
         description={`${trends.length}領域のビジネストレンドをスコアリング ― AI調査・ユーザー行動・Google Trendsの3軸を独自アルゴリズムでブレンド。AIスコアは週次、行動データは日次で自動更新。`}
       />
 
-      {/* ===== スコア算出の仕組み ===== */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="flex items-start gap-3 rounded-xl border border-violet-200 bg-gradient-to-br from-violet-50 to-purple-50 p-4 dark:border-violet-800/60 dark:from-violet-950/40 dark:to-purple-950/30">
-          <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-violet-600 dark:bg-violet-900/50 dark:text-violet-400">
-            <BrainCircuit className="size-4" />
-          </span>
-          <div>
-            <p className="text-sm font-bold text-violet-700 dark:text-violet-400">
-              AI市場調査 <span className="ml-1 rounded-full bg-violet-100 px-1.5 py-0.5 text-[11px] dark:bg-violet-900/50">40%</span>
-            </p>
-            <p className="mt-0.5 text-xs leading-relaxed text-foreground/70">
-              Claudeがウェブ検索で最新の投資動向・ニュース・スタートアップ数を調査してスコアを算出。週1回自動更新。
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-3 rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-4 dark:border-emerald-800/60 dark:from-emerald-950/40 dark:to-teal-950/30">
-          <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 dark:text-emerald-400">
-            <Users className="size-4" />
-          </span>
-          <div>
-            <p className="text-sm font-bold text-emerald-700 dark:text-emerald-400">
-              ユーザー行動 <span className="ml-1 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[11px] dark:bg-emerald-900/50">30%</span>
-            </p>
-            <p className="mt-0.5 text-xs leading-relaxed text-foreground/70">
-              アイデアの閲覧・保存・「やってみる」宣言の数をカテゴリ別に集計。実際の関心度を反映。日次更新。
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-4 dark:border-amber-800/60 dark:from-amber-950/40 dark:to-orange-950/30">
-          <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-400">
-            <BarChart2 className="size-4" />
-          </span>
-          <div>
-            <p className="text-sm font-bold text-amber-700 dark:text-amber-400">
-              Google Trends <span className="ml-1 rounded-full bg-amber-100 px-1.5 py-0.5 text-[11px] dark:bg-amber-900/50">30%</span>
-            </p>
-            <p className="mt-0.5 text-xs leading-relaxed text-foreground/70">
-              日本国内の過去6ヶ月の検索量トレンドを取得。急上昇・下降のシグナルを検知してスコアに加味。
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* ===== Section 1: Rising Trends Spotlight ===== */}
       {rising.length > 0 && (
         <div>
@@ -152,24 +105,28 @@ export default function TrendsPage() {
             <h2 className="text-lg font-bold">注目の上昇トレンド</h2>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-2">
-            {rising.map((t) => (
-              <div
-                key={t.id}
-                className="flex shrink-0 items-center gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-5 py-4"
-                style={{ minWidth: 220 }}
-              >
-                <span className="flex size-10 items-center justify-center rounded-full bg-emerald-500/15 text-base font-black text-emerald-600">
-                  {t.rank}
-                </span>
-                <div className="min-w-0">
-                  <div className="truncate text-base font-bold">{t.label}</div>
-                  <div className="flex items-center gap-1 text-sm text-emerald-600">
-                    <ArrowUpRight className="size-4" />
-                    スコア {t.score}
+            {rising.map((t) => {
+              const card = (
+                <div
+                  className="flex shrink-0 items-center gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-5 py-4 transition-colors hover:bg-emerald-500/10"
+                  style={{ minWidth: 220 }}
+                >
+                  <span className="flex size-10 items-center justify-center rounded-full bg-emerald-500/15 text-base font-black text-emerald-600">
+                    {t.rank}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="truncate text-base font-bold">{t.label}</div>
+                    <div className="flex items-center gap-1 text-sm text-emerald-600">
+                      <ArrowUpRight className="size-4" />
+                      スコア {t.score}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+              return t.slug
+                ? <Link key={t.id} href={`/trends/${t.slug}`}>{card}</Link>
+                : <div key={t.id}>{card}</div>;
+            })}
           </div>
         </div>
       )}
@@ -196,9 +153,8 @@ export default function TrendsPage() {
                       .map((t) => {
                         const mcfg = momentumConfig[t.momentum];
                         const MIcon = mcfg.icon;
-                        return (
+                        const tile = (
                           <div
-                            key={t.id}
                             className="group/tile relative z-0 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-white transition-transform hover:z-50 hover:scale-105 hover:shadow-md"
                             style={{ backgroundColor: scoreToColor(t.score, 0.85) }}
                           >
@@ -223,6 +179,9 @@ export default function TrendsPage() {
                             </div>
                           </div>
                         );
+                        return t.slug
+                          ? <Link key={t.id} href={`/trends/${t.slug}`}>{tile}</Link>
+                          : <div key={t.id}>{tile}</div>;
                       })}
                   </div>
                 </div>
