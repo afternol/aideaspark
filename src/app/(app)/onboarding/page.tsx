@@ -37,7 +37,7 @@ export default function OnboardingPage() {
     <div className="mx-auto max-w-2xl space-y-8 py-8">
       <div className="text-center">
         <Sparkles className="mx-auto mb-3 size-10 text-primary" />
-        <h1 className="text-2xl font-bold">ようこそ BizIdea へ</h1>
+        <h1 className="text-2xl font-bold">ようこそ AideaSpark へ</h1>
         <p className="mt-2 text-muted-foreground">
           興味のある領域を選んでください。あなたに合ったアイデアを優先表示します。
         </p>

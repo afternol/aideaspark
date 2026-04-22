@@ -150,7 +150,7 @@ export function AppHeader() {
           <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
             <Lightbulb className="size-4 text-primary-foreground" />
           </div>
-          <span className="text-lg font-bold tracking-tight">BizIdea</span>
+          <span className="text-lg font-bold tracking-tight">AideaSpark</span>
         </Link>
 
         <DesktopNav pathname={pathname} />

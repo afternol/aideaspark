@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
           <Lightbulb className="size-4 text-primary-foreground" />
         </div>
-        <span className="text-lg font-bold tracking-tight">BizIdea</span>
+        <span className="text-lg font-bold tracking-tight">AideaSpark</span>
       </Link>
       <div className="w-full max-w-sm">{children}</div>
     </div>
