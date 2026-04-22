@@ -58,15 +58,55 @@ function DetailBox({ icon, label, children }: { icon: React.ReactNode; label: st
   );
 }
 
-function InsightBox({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
+const INSIGHT_STYLES = {
+  amber: {
+    wrap:  "border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 dark:border-amber-800/60 dark:from-amber-950/40 dark:to-orange-950/30",
+    label: "text-amber-700 dark:text-amber-400",
+    icon:  "bg-amber-100 text-amber-600 dark:bg-amber-900/50 dark:text-amber-400",
+  },
+  violet: {
+    wrap:  "border-violet-200 bg-gradient-to-br from-violet-50 to-purple-50 dark:border-violet-800/60 dark:from-violet-950/40 dark:to-purple-950/30",
+    label: "text-violet-700 dark:text-violet-400",
+    icon:  "bg-violet-100 text-violet-600 dark:bg-violet-900/50 dark:text-violet-400",
+  },
+  emerald: {
+    wrap:  "border-emerald-200 bg-gradient-to-br from-emerald-50 to-teal-50 dark:border-emerald-800/60 dark:from-emerald-950/40 dark:to-teal-950/30",
+    label: "text-emerald-700 dark:text-emerald-400",
+    icon:  "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 dark:text-emerald-400",
+  },
+} as const;
+
+function InsightBox({
+  icon, label, children, color,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  children: React.ReactNode;
+  color: keyof typeof INSIGHT_STYLES;
+}) {
+  const s = INSIGHT_STYLES[color];
   return (
-    <div className="rounded-lg border border-border bg-muted/30 px-3 py-2.5">
-      <p className="mb-1 flex items-center gap-1 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
-        {icon}{label}
+    <div className={`rounded-xl border p-3.5 ${s.wrap}`}>
+      <p className={`mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider ${s.label}`}>
+        <span className={`inline-flex size-4 items-center justify-center rounded-full ${s.icon}`}>
+          {icon}
+        </span>
+        {label}
       </p>
-      <p className="text-[0.82rem] leading-relaxed text-foreground/75">
-        {typeof children === "string" ? children : children}
+      <p className="text-[0.8rem] leading-relaxed text-foreground/80">
+        {children}
       </p>
+    </div>
+  );
+}
+
+function SectionHeading({ icon, children }: { icon: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
+        {icon}{children}
+      </span>
+      <div className="h-px flex-1 bg-border" />
     </div>
   );
 }
@@ -210,27 +250,33 @@ export default function IdeaDetailPage({ params }: { params: Promise<{ slug: str
           </div>
         </div>
 
-        <div className="space-y-3 lg:col-span-3">
+        <div className="space-y-4 lg:col-span-3">
           {(idea.whyNow || idea.noveltyNote || idea.strengthNote) && (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-              {idea.whyNow && (
-                <InsightBox icon={<Clock className="size-3.5" />} label="なぜ今か">{idea.whyNow}</InsightBox>
-              )}
-              {idea.noveltyNote && (
-                <InsightBox icon={<Sparkles className="size-3.5" />} label="何が新しいのか">{idea.noveltyNote}</InsightBox>
-              )}
-              {idea.strengthNote && (
-                <InsightBox icon={<Star className="size-3.5" />} label="何が良いのか">{idea.strengthNote}</InsightBox>
-              )}
+            <div className="space-y-2.5">
+              <SectionHeading icon={<Sparkles className="size-3" />}>インサイトパネル</SectionHeading>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                {idea.whyNow && (
+                  <InsightBox icon={<Clock className="size-2.5" />} label="なぜ今か" color="amber">{idea.whyNow}</InsightBox>
+                )}
+                {idea.noveltyNote && (
+                  <InsightBox icon={<Sparkles className="size-2.5" />} label="何が新しいのか" color="violet">{idea.noveltyNote}</InsightBox>
+                )}
+                {idea.strengthNote && (
+                  <InsightBox icon={<Star className="size-2.5" />} label="何が良いのか" color="emerald">{idea.strengthNote}</InsightBox>
+                )}
+              </div>
             </div>
           )}
-          <DetailBox icon={<Lightbulb className="size-4" />} label="コンセプト・提供価値">{idea.concept}</DetailBox>
-          <DetailBox icon={<Target className="size-4" />} label="ターゲット">{idea.target}</DetailBox>
-          <DetailBox icon={<Zap className="size-4" />} label="解決する課題">{idea.problem}</DetailBox>
-          <DetailBox icon={<Puzzle className="size-4" />} label="プロダクト・サービス内容"><BulletList text={idea.product} /></DetailBox>
-          <DetailBox icon={<Coins className="size-4" />} label="収益モデル"><BulletList text={idea.revenueModel} /></DetailBox>
-          <DetailBox icon={<Search className="size-4" />} label="類似・競合サービス">{idea.competitors}</DetailBox>
-          <DetailBox icon={<Shield className="size-4" />} label="競合優位性">{idea.competitiveEdge}</DetailBox>
+
+          <div className="space-y-3">
+            <SectionHeading icon={<FileText className="size-3" />}>アイデア詳細</SectionHeading>
+            <DetailBox icon={<Lightbulb className="size-4" />} label="コンセプト・提供価値">{idea.concept}</DetailBox>
+            <DetailBox icon={<Target className="size-4" />} label="ターゲット">{idea.target}</DetailBox>
+            <DetailBox icon={<Zap className="size-4" />} label="解決する課題">{idea.problem}</DetailBox>
+            <DetailBox icon={<Puzzle className="size-4" />} label="プロダクト・サービス内容"><BulletList text={idea.product} /></DetailBox>
+            <DetailBox icon={<Coins className="size-4" />} label="収益モデル"><BulletList text={idea.revenueModel} /></DetailBox>
+            <DetailBox icon={<Search className="size-4" />} label="類似・競合サービス">{idea.competitors}</DetailBox>
+            <DetailBox icon={<Shield className="size-4" />} label="競合優位性">{idea.competitiveEdge}</DetailBox>
           {idea.trendKeywords.length > 0 && (
             <DetailBox icon={<TrendingUp className="size-4" />} label="関連トレンド">
               <div className="flex flex-wrap gap-1.5">
@@ -238,6 +284,7 @@ export default function IdeaDetailPage({ params }: { params: Promise<{ slug: str
               </div>
             </DetailBox>
           )}
+        </div>
         </div>
       </div>
 
