@@ -93,7 +93,7 @@ function InsightBox({
         </span>
         {label}
       </p>
-      <p className="text-[0.8rem] leading-relaxed text-foreground/80">
+      <p className="text-[0.95rem] leading-relaxed text-foreground/80">
         {children}
       </p>
     </div>
