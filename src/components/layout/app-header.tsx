@@ -153,9 +153,9 @@ export function AppHeader() {
           <Image
             src="/logo.png"
             alt="AideaSpark"
-            width={160}
-            height={40}
-            className="h-8 w-auto"
+            width={220}
+            height={55}
+            className="h-10 w-auto"
             priority
           />
         </Link>
