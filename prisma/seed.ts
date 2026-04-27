@@ -24,7 +24,9 @@ async function main() {
       problem:          idea.problem,
       product:          idea.product,
       revenueModel:     idea.revenueModel,
-      competitors:      idea.competitors,
+      competitors:      Array.isArray((idea as any).competitors)
+                          ? (idea as any).competitors.join(", ")
+                          : idea.competitors,
       competitiveEdge:  idea.competitiveEdge,
       tags:             idea.tags,           // Json型: 配列をそのまま
       category:         idea.category,
@@ -41,6 +43,9 @@ async function main() {
       bookmarks:        idea.bookmarks,
       inspirationSource: idea.inspirationSource ?? null,
       patterns:         (idea.patterns ?? []) as any,
+      whyNow:           (idea as any).whyNow ?? null,
+      noveltyNote:      (idea as any).noveltyNote ?? null,
+      strengthNote:     (idea as any).strengthNote ?? null,
     };
 
     await prisma.idea.upsert({

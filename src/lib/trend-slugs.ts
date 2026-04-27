@@ -7,7 +7,8 @@ export const TREND_SLUG_MAP: Record<string, string> = {
   "サブスクリプション":        "subscription",
   "シェアリング":             "sharing-economy",
   "アグリゲーター":           "aggregator",
-  "API・BaaS":               "api-baas",
+  "API":                     "api",
+  "BaaS":                    "baas",
   "バーティカルSaaS":         "vertical-saas",
   "コミュニティ":             "community",
   // AI・データ

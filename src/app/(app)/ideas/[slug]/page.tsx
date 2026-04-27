@@ -253,22 +253,20 @@ export default function IdeaDetailPage({ params }: { params: Promise<{ slug: str
         </div>
 
         <div className="space-y-4 lg:col-span-3">
-          {(idea.whyNow || idea.noveltyNote || idea.strengthNote) && (
-            <div className="space-y-2.5">
-              <SectionHeading icon={<Sparkles className="size-3" />}>インサイトパネル</SectionHeading>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                {idea.whyNow && (
-                  <InsightBox icon={<Clock className="size-2.5" />} label="なぜ今か" color="amber">{idea.whyNow}</InsightBox>
-                )}
-                {idea.noveltyNote && (
-                  <InsightBox icon={<Sparkles className="size-2.5" />} label="何が新しいのか" color="violet">{idea.noveltyNote}</InsightBox>
-                )}
-                {idea.strengthNote && (
-                  <InsightBox icon={<Star className="size-2.5" />} label="何が良いのか" color="emerald">{idea.strengthNote}</InsightBox>
-                )}
-              </div>
+          <div className="space-y-2.5">
+            <SectionHeading icon={<Sparkles className="size-3" />}>インサイトパネル</SectionHeading>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <InsightBox icon={<Clock className="size-2.5" />} label="なぜ今か" color="amber">
+                {idea.whyNow ?? "データなし"}
+              </InsightBox>
+              <InsightBox icon={<Sparkles className="size-2.5" />} label="何が新しいのか" color="violet">
+                {idea.noveltyNote ?? "データなし"}
+              </InsightBox>
+              <InsightBox icon={<Star className="size-2.5" />} label="何が良いのか" color="emerald">
+                {idea.strengthNote ?? "データなし"}
+              </InsightBox>
             </div>
-          )}
+          </div>
 
           <div className="space-y-3">
             <SectionHeading icon={<FileText className="size-3" />}>アイデア詳細</SectionHeading>

@@ -20,12 +20,31 @@ const avgScore = (scores: IdeaScore) => {
   return Math.round((vals.reduce((a, b) => a + b, 0) / vals.length) * 10) / 10;
 };
 
+const accentBg = (n: number) =>
+  n >= 4.5
+    ? "bg-amber-400"
+    : n >= 4.0
+      ? "bg-orange-300"
+      : n >= 3.5
+        ? "bg-sky-400"
+        : n >= 3.0
+          ? "bg-violet-300"
+          : n >= 2.5
+            ? "bg-slate-300"
+            : "bg-gray-200";
+
 const scoreColor = (n: number) =>
-  n >= 4
-    ? "text-emerald-600 dark:text-emerald-400"
-    : n >= 3
-      ? "text-yellow-600 dark:text-yellow-400"
-      : "text-red-600 dark:text-red-400";
+  n >= 4.5
+    ? "text-amber-600 dark:text-amber-400"
+    : n >= 4.0
+      ? "text-orange-600 dark:text-orange-400"
+      : n >= 3.5
+        ? "text-sky-600 dark:text-sky-400"
+        : n >= 3.0
+          ? "text-violet-600 dark:text-violet-400"
+          : n >= 2.5
+            ? "text-slate-500 dark:text-slate-400"
+            : "text-gray-400 dark:text-gray-500";
 
 export function IdeaSummaryCard({ idea }: IdeaSummaryCardProps) {
   const avg = avgScore(idea.scores);
@@ -64,7 +83,7 @@ export function IdeaSummaryCard({ idea }: IdeaSummaryCardProps) {
   return (
     <Link href={`/ideas/${idea.slug}`} className="block h-full">
       <Card className="group h-full cursor-pointer gap-0 overflow-hidden py-0 transition-all hover:shadow-lg hover:-translate-y-0.5">
-        <div className="h-1 bg-primary" />
+        <div className={cn("h-1.5", accentBg(avg))} />
 
         <CardContent className="flex h-full flex-col gap-3 p-4">
           {/* Top: Name + Bookmark */}
@@ -82,10 +101,10 @@ export function IdeaSummaryCard({ idea }: IdeaSummaryCardProps) {
 
           {/* Badges */}
           <div className="flex flex-wrap gap-1.5">
-            <Badge variant="secondary" className="text-[10px]">
+            <Badge variant="secondary" className="text-sm">
               {idea.category}
             </Badge>
-            <Badge variant="outline" className="text-[10px]">
+            <Badge variant="outline" className="text-sm">
               {idea.targetIndustry}
             </Badge>
           </div>
@@ -104,7 +123,7 @@ export function IdeaSummaryCard({ idea }: IdeaSummaryCardProps) {
                   onClick={(e) => handleReaction(e, key)}
                   disabled={reactionLoading === key}
                   className={cn(
-                    "flex items-center gap-1 rounded-full border px-2 py-1 text-[11px] font-medium transition-all",
+                    "flex items-center gap-1 rounded-full border px-2 py-1 text-sm font-medium transition-all",
                     active
                       ? "border-primary/40 bg-primary/10 text-primary"
                       : "border-border bg-muted/40 text-muted-foreground hover:border-primary/30 hover:bg-primary/5"
@@ -113,7 +132,7 @@ export function IdeaSummaryCard({ idea }: IdeaSummaryCardProps) {
                   <span>{emoji}</span>
                   <span>{label}</span>
                   {count > 0 && (
-                    <span className={cn("rounded-full px-1 text-[10px] font-bold", active ? "bg-primary/20" : "bg-muted")}>
+                    <span className={cn("rounded-full px-1 text-xs font-bold", active ? "bg-primary/20" : "bg-muted")}>
                       {count}
                     </span>
                   )}
@@ -126,18 +145,18 @@ export function IdeaSummaryCard({ idea }: IdeaSummaryCardProps) {
           <div className="mt-auto flex items-center justify-between border-t pt-3">
             <div className="flex flex-wrap gap-1">
               {idea.tags.slice(0, 2).map((tag) => (
-                <span key={tag} className="text-[10px] text-muted-foreground">
+                <span key={tag} className="text-sm text-muted-foreground">
                   #{tag}
                 </span>
               ))}
               {idea.tags.length > 2 && (
-                <span className="text-[10px] text-muted-foreground">
+                <span className="text-sm text-muted-foreground">
                   +{idea.tags.length - 2}
                 </span>
               )}
             </div>
             <div className="flex items-center gap-1">
-              <span className="text-[10px] text-muted-foreground">総合</span>
+              <span className="text-sm text-muted-foreground">総合</span>
               <span className={cn("text-lg font-black", scoreColor(avg))}>{avg}</span>
             </div>
           </div>

@@ -22,8 +22,8 @@ export function MiniRadarChart({ scores }: MiniRadarChartProps) {
   }));
 
   return (
-    <ResponsiveContainer width="100%" height={240}>
-      <RadarChart data={data} cx="50%" cy="50%" outerRadius="55%">
+    <ResponsiveContainer width="100%" height={320}>
+      <RadarChart data={data} cx="50%" cy="50%" outerRadius="50%">
         <PolarGrid stroke="var(--color-border)" strokeWidth={0.5} />
         <PolarRadiusAxis
           domain={[0, 5]}
@@ -45,16 +45,16 @@ export function MiniRadarChart({ scores }: MiniRadarChartProps) {
               <g transform={`translate(${x},${y})`}>
                 <text
                   textAnchor="middle"
-                  dy={-3}
-                  fontSize={11}
+                  dy={-2}
+                  fontSize={14}
                   fill="var(--color-muted-foreground)"
                 >
                   {payload.value}
                 </text>
                 <text
                   textAnchor="middle"
-                  dy={11}
-                  fontSize={13}
+                  dy={14}
+                  fontSize={14}
                   fontWeight={800}
                   fill="var(--color-primary)"
                 >

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import {
@@ -148,11 +149,15 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-lg">
       <div className="mx-auto flex h-14 max-w-7xl items-center px-4 md:px-6">
-        <Link href="/" className="mr-8 flex items-center gap-2">
-          <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
-            <Lightbulb className="size-4 text-primary-foreground" />
-          </div>
-          <span className="text-lg font-bold tracking-tight">AideaSpark</span>
+        <Link href="/" className="mr-8 flex items-center">
+          <Image
+            src="/logo.png"
+            alt="AideaSpark"
+            width={160}
+            height={40}
+            className="h-8 w-auto"
+            priority
+          />
         </Link>
 
         <DesktopNav pathname={pathname} />

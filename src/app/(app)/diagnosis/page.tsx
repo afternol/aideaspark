@@ -29,7 +29,7 @@ const questions: Question[] = [
     options: [
       { value: "AI・データ", label: "AI・データ", icon: "🤖" },
       { value: "金融・決済", label: "金融・決済", icon: "💳" },
-      { value: "ヘルスケア・ウェルネス", label: "ヘルスケア", icon: "🏥" },
+      { value: "ヘルスケア・ウェルネス", label: "ウェルネス", icon: "🏥" },
       { value: "教育・人材", label: "教育・人材", icon: "📚" },
       { value: "生活・消費", label: "生活・消費", icon: "🛍️" },
       { value: "産業・インフラ", label: "産業・インフラ", icon: "🏭" },

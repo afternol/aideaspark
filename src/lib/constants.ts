@@ -28,7 +28,8 @@ export const CATEGORIES: CategoryItem[] = [
   { value: "サブスクリプション", label: "サブスクリプション", group: "ビジネスモデル" },
   { value: "シェアリング", label: "シェアリング", group: "ビジネスモデル" },
   { value: "アグリゲーター", label: "アグリゲーター", group: "ビジネスモデル" },
-  { value: "API・BaaS", label: "API・BaaS", group: "ビジネスモデル" },
+  { value: "API", label: "API", group: "ビジネスモデル" },
+  { value: "BaaS", label: "BaaS", group: "ビジネスモデル" },
   { value: "バーティカルSaaS", label: "バーティカルSaaS", group: "ビジネスモデル" },
   { value: "コミュニティ", label: "コミュニティ", group: "ビジネスモデル" },
 
@@ -55,7 +56,6 @@ export const CATEGORIES: CategoryItem[] = [
   { value: "暗号資産", label: "暗号資産", group: "金融・決済" },
 
   // ヘルスケア・ウェルネス
-  { value: "ヘルスケア", label: "ヘルスケア", group: "ヘルスケア・ウェルネス" },
   { value: "デジタルヘルス", label: "デジタルヘルス", group: "ヘルスケア・ウェルネス" },
   { value: "メンタルヘルス", label: "メンタルヘルス", group: "ヘルスケア・ウェルネス" },
   { value: "フェムテック", label: "フェムテック", group: "ヘルスケア・ウェルネス" },
@@ -67,7 +67,6 @@ export const CATEGORIES: CategoryItem[] = [
   { value: "ペットテック", label: "ペットテック", group: "ヘルスケア・ウェルネス" },
 
   // 教育・人材
-  { value: "教育", label: "教育", group: "教育・人材" },
   { value: "EdTech", label: "EdTech", group: "教育・人材" },
   { value: "リスキリング", label: "リスキリング", group: "教育・人材" },
   { value: "HR Tech", label: "HR Tech", group: "教育・人材" },
@@ -80,7 +79,6 @@ export const CATEGORIES: CategoryItem[] = [
   // 生活・消費
   { value: "フードテック", label: "フードテック", group: "生活・消費" },
   { value: "リテールテック", label: "リテールテック", group: "生活・消費" },
-  { value: "不動産", label: "不動産", group: "生活・消費" },
   { value: "プロップテック", label: "プロップテック", group: "生活・消費" },
   { value: "トラベルテック", label: "トラベルテック", group: "生活・消費" },
   { value: "ファッションテック", label: "ファッションテック", group: "生活・消費" },

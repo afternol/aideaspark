@@ -31,11 +31,17 @@ const avgScore = (scores: IdeaScore) => {
 };
 
 const scoreColorClass = (n: number) =>
-  n >= 4
-    ? "text-emerald-600 dark:text-emerald-400"
-    : n >= 3
-      ? "text-yellow-600 dark:text-yellow-400"
-      : "text-red-600 dark:text-red-400";
+  n >= 4.5
+    ? "text-amber-600 dark:text-amber-400"
+    : n >= 4.0
+      ? "text-orange-600 dark:text-orange-400"
+      : n >= 3.5
+        ? "text-sky-600 dark:text-sky-400"
+        : n >= 3.0
+          ? "text-violet-600 dark:text-violet-400"
+          : n >= 2.5
+            ? "text-slate-500 dark:text-slate-400"
+            : "text-gray-400 dark:text-gray-500";
 
 interface DetailBoxProps {
   icon: React.ReactNode;

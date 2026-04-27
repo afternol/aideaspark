@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   },
   description:
     "厳選されたビジネスアイデアを毎週配信。起業・新規事業の最初の一歩を加速するプラットフォーム。",
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
