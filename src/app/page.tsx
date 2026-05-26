@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
-  Lightbulb,
   TrendingUp,
   Trophy,
   ArrowRight,
@@ -68,11 +68,8 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 md:px-6">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
-              <Lightbulb className="size-4 text-primary-foreground" />
-            </div>
-            <span className="text-lg font-bold tracking-tight">AideaSpark</span>
+          <Link href="/" className="flex items-center">
+            <Image src="/logo.png" alt="AideaSpark" width={400} height={100} className="h-24 w-auto" priority />
           </Link>
 
           {/* Nav */}
@@ -1038,11 +1035,8 @@ export default function LandingPage() {
           <div className="mb-8 flex flex-col items-start gap-8 sm:flex-row">
             {/* Brand */}
             <div className="shrink-0">
-              <div className="mb-2 flex items-center gap-2">
-                <div className="flex size-7 items-center justify-center rounded-lg bg-primary">
-                  <Lightbulb className="size-3.5 text-primary-foreground" />
-                </div>
-                <span className="text-base font-bold">AideaSpark</span>
+              <div className="mb-2">
+                <Image src="/logo.png" alt="AideaSpark" width={400} height={100} className="h-16 w-auto" />
               </div>
               <p className="max-w-xs text-base leading-relaxed text-muted-foreground">
                 起業・新規事業の「何をやるか」の意思決定を科学的にサポートするビジネスアイデアメディア。

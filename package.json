@@ -6,7 +6,12 @@
     "dev": "next dev -p 4001",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "pipeline:generate": "node scripts/batch-generate-ideas.mjs",
+    "pipeline:import": "node scripts/import-generated.mjs",
+    "pipeline:factcheck": "node scripts/factcheck-before-seed.mjs",
+    "pipeline:seed": "npx tsx prisma/seed.ts",
+    "pipeline:insights": "node scripts/generate-insights.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.82.0",

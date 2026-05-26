@@ -1,0 +1,528 @@
+2026-05-25 20:31:03,678 [INFO] AideaSpark アイデア生成パイプライン v2.1 開始
+2026-05-25 20:31:03,678 [INFO] テーマ数: 10件 / 同時処理: 3件 / 1テーマ3案生成 / FC同時実行: 2件
+2026-05-25 20:31:03,678 [INFO] ログ出力先: generate_ideas_20260525_203103.log
+2026-05-25 20:31:03,856 [INFO] 現在のDB最大number: 55
+2026-05-25 20:31:03,856 [INFO] 
+============================================================
+2026-05-25 20:31:03,857 [INFO] テーマ: AIエージェントを使った法人営業自動化  (#56)
+2026-05-25 20:31:03,857 [INFO] ============================================================
+2026-05-25 20:31:03,859 [INFO]   [AIエージェントを使った法人営] Phase1: 規制・競合・海外 並列調査開始
+2026-05-25 20:31:03,859 [INFO] 
+============================================================
+2026-05-25 20:31:03,859 [INFO] テーマ: 介護現場の記録・申し送りAI自動化  (#57)
+2026-05-25 20:31:03,859 [INFO] ============================================================
+2026-05-25 20:31:03,859 [INFO]   [介護現場の記録・申し送りAI自] Phase1: 規制・競合・海外 並列調査開始
+2026-05-25 20:31:03,859 [INFO] 
+============================================================
+2026-05-25 20:31:03,859 [INFO] テーマ: 中小企業向け人的資本開示支援SaaS  (#58)
+2026-05-25 20:31:03,859 [INFO] ============================================================
+2026-05-25 20:31:03,859 [INFO]   [中小企業向け人的資本開示支援S] Phase1: 規制・競合・海外 並列調査開始
+2026-05-25 20:31:04,183 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:04,184 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:04,184 [WARNING] [competitors/中小企業向け人的資本開示] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDEZLX6bR9vnmGX1CDG'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:04,185 [WARNING] [competitors/AIエージェントを使った] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDEZLmAdbN1KxwwQd62'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:04,199 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:04,200 [WARNING] [overseas/介護現場の記録・申し送り] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDEZNkcLu9uGUQcQSFY'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:04,209 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:04,210 [WARNING] [overseas/中小企業向け人的資本開示] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDEZNkUvP6nTNcNegzf'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:04,214 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:04,215 [WARNING] [regulations/AIエージェントを使った] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDEZPFJU58yVkbJdXsh'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:04,220 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:04,220 [WARNING] [overseas/AIエージェントを使った] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDEZQjH8jkQmccWRGwF'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:04,245 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:04,245 [WARNING] [regulations/中小企業向け人的資本開示] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDEZZfAXxitsf5oAmi1'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:04,284 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:04,285 [WARNING] [regulations/介護現場の記録・申し送り] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDEZPVezBHNnuW6QxeC'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:04,294 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:04,294 [WARNING] [competitors/介護現場の記録・申し送り] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDEZPF5g3XhL4hcxDop'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:14,427 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:14,428 [WARNING] [competitors/AIエージェントを使った] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDFK8XPPqoxu4gA8Pw7'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:14,435 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:14,436 [WARNING] [overseas/介護現場の記録・申し送り] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDFKBVkGTkDvYmba26s'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:14,454 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:14,455 [WARNING] [competitors/中小企業向け人的資本開示] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDFKDjX9epSt1hvifrb'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:14,455 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:14,456 [WARNING] [overseas/中小企業向け人的資本開示] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDFKEyShaE5iJ3KSMBA'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:14,459 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:14,459 [WARNING] [regulations/AIエージェントを使った] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDFKGDJRuAKfB17AjHi'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:14,480 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:14,481 [WARNING] [regulations/中小企業向け人的資本開示] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDFKMvDmhLZXbfYFknK'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:14,540 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:14,541 [WARNING] [overseas/AIエージェントを使った] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDFKLRrNDtaYyqeYiG7'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:14,565 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:14,565 [WARNING] [competitors/介護現場の記録・申し送り] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDFKdHfWyKWb3MtgV73'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:14,703 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:14,704 [WARNING] [regulations/介護現場の記録・申し送り] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDFKvQ8s3a2gAF1yfNd'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:24,693 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,694 [ERROR]   [AIエージェントを使った法人営] ❌ 処理失敗: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG4x1zaStLtjk9ve1k'}
+Traceback (most recent call last):
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 759, in process_theme
+    research = await phase1_research(theme)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 468, in phase1_research
+    regs, comps, overseas = await asyncio.gather(
+                            ^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 416, in search_competitors
+        msg = await with_retry(lambda: ai.messages.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<21 lines>...
+        ), label=f"competitors/{theme[:12]}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 377, in with_retry
+    return await coro_fn()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\resources\messages\messages.py", line 2453, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<32 lines>...
+    )
+    ^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 2007, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 1792, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG4x1zaStLtjk9ve1k'}
+2026-05-25 20:31:24,698 [INFO] 
+============================================================
+2026-05-25 20:31:24,698 [INFO] テーマ: フリーランス向け確定申告・会計AI自動化  (#59)
+2026-05-25 20:31:24,698 [INFO] ============================================================
+2026-05-25 20:31:24,698 [INFO]   [フリーランス向け確定申告・会計] Phase1: 規制・競合・海外 並列調査開始
+2026-05-25 20:31:24,700 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,700 [ERROR]   [介護現場の記録・申し送りAI自] ❌ 処理失敗: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG4wXMrUUL6yGcovS4'}
+Traceback (most recent call last):
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 759, in process_theme
+    research = await phase1_research(theme)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 468, in phase1_research
+    regs, comps, overseas = await asyncio.gather(
+                            ^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 443, in search_overseas
+        msg = await with_retry(lambda: ai.messages.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<18 lines>...
+        ), label=f"overseas/{theme[:12]}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 377, in with_retry
+    return await coro_fn()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\resources\messages\messages.py", line 2453, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<32 lines>...
+    )
+    ^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 2007, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 1792, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG4wXMrUUL6yGcovS4'}
+2026-05-25 20:31:24,701 [INFO] 
+============================================================
+2026-05-25 20:31:24,701 [INFO] テーマ: 建設現場の安全管理AIカメラ監視  (#60)
+2026-05-25 20:31:24,701 [INFO] ============================================================
+2026-05-25 20:31:24,701 [INFO]   [建設現場の安全管理AIカメラ監] Phase1: 規制・競合・海外 並列調査開始
+2026-05-25 20:31:24,729 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,732 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,732 [ERROR]   [中小企業向け人的資本開示支援S] ❌ 処理失敗: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG5BuedLt5qJvfuZrY'}
+Traceback (most recent call last):
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 759, in process_theme
+    research = await phase1_research(theme)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 468, in phase1_research
+    regs, comps, overseas = await asyncio.gather(
+                            ^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 416, in search_competitors
+        msg = await with_retry(lambda: ai.messages.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<21 lines>...
+        ), label=f"competitors/{theme[:12]}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 377, in with_retry
+    return await coro_fn()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\resources\messages\messages.py", line 2453, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<32 lines>...
+    )
+    ^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 2007, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 1792, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG5BuedLt5qJvfuZrY'}
+2026-05-25 20:31:24,734 [INFO] 
+============================================================
+2026-05-25 20:31:24,734 [INFO] テーマ: 飲食店向けフードロス削減マーケットプレイス  (#61)
+2026-05-25 20:31:24,734 [INFO] ============================================================
+2026-05-25 20:31:24,734 [INFO]   [飲食店向けフードロス削減マーケ] Phase1: 規制・競合・海外 並列調査開始
+2026-05-25 20:31:24,740 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,756 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,821 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,824 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,917 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,918 [WARNING] [competitors/フリーランス向け確定申告] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG5zHEnkuJ55mCdELv'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:24,941 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,941 [WARNING] [regulations/フリーランス向け確定申告] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG621WmbUmwucLnbvs'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:24,944 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,944 [WARNING] [overseas/フリーランス向け確定申告] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG67DpJVr9HGNaiwGm'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:24,952 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,953 [WARNING] [competitors/建設現場の安全管理AIカ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG68D8orWZQkfGFsoM'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:24,955 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,955 [WARNING] [regulations/飲食店向けフードロス削減] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG68TVU3MKdxwN9zjJ'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:24,971 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,973 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,973 [WARNING] [overseas/飲食店向けフードロス削減] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG6EQonVDLEB7b1aFy'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:24,976 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,977 [WARNING] [regulations/建設現場の安全管理AIカ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG68xDCGfwQECf7g3r'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:24,978 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:24,979 [WARNING] [overseas/建設現場の安全管理AIカ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG6ACGpwknVX4tFbxD'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:25,261 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:25,263 [WARNING] [competitors/飲食店向けフードロス削減] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDG6CRncXKLjn9YSBb9'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:35,169 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:35,170 [WARNING] [competitors/フリーランス向け確定申告] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDGqnXe3SUfPTjmgkJ1'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:35,200 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:35,201 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:35,202 [WARNING] [regulations/飲食店向けフードロス削減] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDGqviSUmBNzXpuqHbo'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:35,202 [WARNING] [regulations/フリーランス向け確定申告] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDGqtysqa9Q5xXmmLPM'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:35,213 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:35,213 [WARNING] [overseas/フリーランス向け確定申告] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDGqvDU97imJe5LGeb1'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:35,216 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:35,216 [WARNING] [competitors/建設現場の安全管理AIカ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDGqvxdky3WhohRca9Y'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:35,241 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:35,242 [WARNING] [overseas/建設現場の安全管理AIカ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDGr2fmdx3dX1P3dDqz'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:35,323 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:35,324 [WARNING] [regulations/建設現場の安全管理AIカ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDGr8cvyGF6Axnx8p7W'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:35,326 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:35,327 [WARNING] [overseas/飲食店向けフードロス削減] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDGr4uC1oBuwfYcMVbd'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:35,681 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:35,682 [WARNING] [competitors/飲食店向けフードロス削減] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDGsMY4tcGzdvNgBaRd'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:45,441 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,442 [ERROR]   [フリーランス向け確定申告・会計] ❌ 処理失敗: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHbekfnnWJQ9KGPWWz'}
+Traceback (most recent call last):
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 759, in process_theme
+    research = await phase1_research(theme)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 468, in phase1_research
+    regs, comps, overseas = await asyncio.gather(
+                            ^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 416, in search_competitors
+        msg = await with_retry(lambda: ai.messages.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<21 lines>...
+        ), label=f"competitors/{theme[:12]}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 377, in with_retry
+    return await coro_fn()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\resources\messages\messages.py", line 2453, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<32 lines>...
+    )
+    ^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 2007, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 1792, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHbekfnnWJQ9KGPWWz'}
+2026-05-25 20:31:45,446 [INFO] 
+============================================================
+2026-05-25 20:31:45,446 [INFO] テーマ: 学校教員の業務効率化SaaS  (#62)
+2026-05-25 20:31:45,446 [INFO] ============================================================
+2026-05-25 20:31:45,446 [INFO]   [学校教員の業務効率化SaaS] Phase1: 規制・競合・海外 並列調査開始
+2026-05-25 20:31:45,470 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,478 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,482 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,482 [ERROR]   [飲食店向けフードロス削減マーケ] ❌ 処理失敗: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHbngmKLeg9CJCqUnK'}
+Traceback (most recent call last):
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 759, in process_theme
+    research = await phase1_research(theme)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 468, in phase1_research
+    regs, comps, overseas = await asyncio.gather(
+                            ^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 397, in search_regulations
+        msg = await with_retry(lambda: ai.messages.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+        ), label=f"regulations/{theme[:12]}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 377, in with_retry
+    return await coro_fn()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\resources\messages\messages.py", line 2453, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<32 lines>...
+    )
+    ^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 2007, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 1792, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHbngmKLeg9CJCqUnK'}
+2026-05-25 20:31:45,484 [INFO] 
+============================================================
+2026-05-25 20:31:45,484 [INFO] テーマ: 中小製造業向けサプライチェーンリスク可視化  (#63)
+2026-05-25 20:31:45,484 [INFO] ============================================================
+2026-05-25 20:31:45,484 [INFO]   [中小製造業向けサプライチェーン] Phase1: 規制・競合・海外 並列調査開始
+2026-05-25 20:31:45,487 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,487 [ERROR]   [建設現場の安全管理AIカメラ監] ❌ 処理失敗: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHbstnqStAAqLaDV8A'}
+Traceback (most recent call last):
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 759, in process_theme
+    research = await phase1_research(theme)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 468, in phase1_research
+    regs, comps, overseas = await asyncio.gather(
+                            ^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 416, in search_competitors
+        msg = await with_retry(lambda: ai.messages.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<21 lines>...
+        ), label=f"competitors/{theme[:12]}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 377, in with_retry
+    return await coro_fn()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\resources\messages\messages.py", line 2453, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<32 lines>...
+    )
+    ^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 2007, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 1792, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHbstnqStAAqLaDV8A'}
+2026-05-25 20:31:45,488 [INFO] 
+============================================================
+2026-05-25 20:31:45,488 [INFO] テーマ: 訪日インバウンド向け体験予約プラットフォーム  (#64)
+2026-05-25 20:31:45,488 [INFO] ============================================================
+2026-05-25 20:31:45,488 [INFO]   [訪日インバウンド向け体験予約プ] Phase1: 規制・競合・海外 並列調査開始
+2026-05-25 20:31:45,526 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,556 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,565 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,694 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,695 [WARNING] [regulations/学校教員の業務効率化Sa] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHckEnnpMghhYFPLPW'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:45,728 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,728 [WARNING] [competitors/中小製造業向けサプライチ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHctuyUs4ephkeMgEW'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:45,733 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,733 [WARNING] [overseas/中小製造業向けサプライチ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHcuQryCy8joVSb3aH'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:45,746 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,747 [WARNING] [competitors/訪日インバウンド向け体験] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHcysngrz34JQNM114'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:45,775 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,776 [WARNING] [overseas/訪日インバウンド向け体験] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHd1NCpH9jsaGaMFtB'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:45,777 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,778 [WARNING] [overseas/学校教員の業務効率化Sa] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHcyNjcVrqWghCMxkU'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:45,808 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,809 [WARNING] [regulations/中小製造業向けサプライチ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHd84JKmJf8o3yZkSS'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:45,868 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:45,870 [WARNING] [regulations/訪日インバウンド向け体験] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHdQg47SZDcrVfftWy'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:45,918 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:46,093 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:46,094 [WARNING] [competitors/学校教員の業務効率化Sa] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDHcmyWE8zX8QuP2rSK'} — 10秒後にリトライ (1/3)
+2026-05-25 20:31:55,959 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:55,960 [WARNING] [regulations/学校教員の業務効率化Sa] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDJNdhWePnnD2makNnU'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:55,987 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:55,988 [WARNING] [competitors/訪日インバウンド向け体験] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDJNos92aw9DM1vhV9j'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:55,993 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:55,993 [WARNING] [overseas/中小製造業向けサプライチ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDJNmt2TagBDZ9RqJBs'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:56,010 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:56,012 [WARNING] [competitors/中小製造業向けサプライチ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDJNk9MEWA77iWw411d'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:56,036 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:56,037 [WARNING] [overseas/訪日インバウンド向け体験] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDJNxno29irqFQ8e9Dp'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:56,039 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:56,040 [WARNING] [overseas/学校教員の業務効率化Sa] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDJNy3Grqu2B77wt7P2'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:56,120 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:56,121 [WARNING] [regulations/訪日インバウンド向け体験] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDJPMMbeX3qyyqwWDHK'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:56,432 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:56,433 [WARNING] [regulations/中小製造業向けサプライチ] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDJP9Cr8GdhYxoXoyxt'} — 10秒後にリトライ (2/3)
+2026-05-25 20:31:56,861 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:31:56,862 [WARNING] [competitors/学校教員の業務効率化Sa] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDJQEwCwxJKT5cu6Si1'} — 10秒後にリトライ (2/3)
+2026-05-25 20:32:06,230 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:06,231 [ERROR]   [学校教員の業務効率化SaaS] ❌ 処理失敗: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDK8YQ7HZcj2DYTsbX7'}
+Traceback (most recent call last):
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 759, in process_theme
+    research = await phase1_research(theme)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 468, in phase1_research
+    regs, comps, overseas = await asyncio.gather(
+                            ^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 397, in search_regulations
+        msg = await with_retry(lambda: ai.messages.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+        ), label=f"regulations/{theme[:12]}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 377, in with_retry
+    return await coro_fn()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\resources\messages\messages.py", line 2453, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<32 lines>...
+    )
+    ^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 2007, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 1792, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDK8YQ7HZcj2DYTsbX7'}
+2026-05-25 20:32:06,233 [INFO] 
+============================================================
+2026-05-25 20:32:06,233 [INFO] テーマ: フェムテック×職場健康管理SaaS  (#65)
+2026-05-25 20:32:06,233 [INFO] ============================================================
+2026-05-25 20:32:06,233 [INFO]   [フェムテック×職場健康管理Sa] Phase1: 規制・競合・海外 並列調査開始
+2026-05-25 20:32:06,236 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:06,237 [ERROR]   [中小製造業向けサプライチェーン] ❌ 処理失敗: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDK8csF9eUDtMDctJBz'}
+Traceback (most recent call last):
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 759, in process_theme
+    research = await phase1_research(theme)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 468, in phase1_research
+    regs, comps, overseas = await asyncio.gather(
+                            ^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 443, in search_overseas
+        msg = await with_retry(lambda: ai.messages.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<18 lines>...
+        ), label=f"overseas/{theme[:12]}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 377, in with_retry
+    return await coro_fn()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\resources\messages\messages.py", line 2453, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<32 lines>...
+    )
+    ^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 2007, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 1792, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDK8csF9eUDtMDctJBz'}
+2026-05-25 20:32:06,245 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:06,245 [ERROR]   [訪日インバウンド向け体験予約プ] ❌ 処理失敗: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDK8bsi9JXq18sD1TC7'}
+Traceback (most recent call last):
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 759, in process_theme
+    research = await phase1_research(theme)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 468, in phase1_research
+    regs, comps, overseas = await asyncio.gather(
+                            ^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 416, in search_competitors
+        msg = await with_retry(lambda: ai.messages.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<21 lines>...
+        ), label=f"competitors/{theme[:12]}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 377, in with_retry
+    return await coro_fn()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\resources\messages\messages.py", line 2453, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<32 lines>...
+    )
+    ^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 2007, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 1792, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDK8bsi9JXq18sD1TC7'}
+2026-05-25 20:32:06,300 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:06,394 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:06,475 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:06,479 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:06,479 [WARNING] [regulations/フェムテック×職場健康管] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDK9ceGGX8PsCH5ukLP'} — 10秒後にリトライ (1/3)
+2026-05-25 20:32:06,501 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:06,502 [WARNING] [overseas/フェムテック×職場健康管] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDK9jash27ToDAQ9rwc'} — 10秒後にリトライ (1/3)
+2026-05-25 20:32:06,556 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:06,557 [WARNING] [competitors/フェムテック×職場健康管] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDKA1xCWkL8bK3EgG6Q'} — 10秒後にリトライ (1/3)
+2026-05-25 20:32:06,627 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:06,683 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:07,118 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:16,736 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:16,737 [WARNING] [regulations/フェムテック×職場健康管] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDKuTdTAQAfVNZHnthu'} — 10秒後にリトライ (2/3)
+2026-05-25 20:32:16,760 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:16,761 [WARNING] [overseas/フェムテック×職場健康管] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDKua5Ji4Zuwi3QMzfi'} — 10秒後にリトライ (2/3)
+2026-05-25 20:32:16,795 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:16,796 [WARNING] [competitors/フェムテック×職場健康管] APIError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDKuoDHNBjLVnhmdXKJ'} — 10秒後にリトライ (2/3)
+2026-05-25 20:32:26,992 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 401 Unauthorized"
+2026-05-25 20:32:26,992 [ERROR]   [フェムテック×職場健康管理Sa] ❌ 処理失敗: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDLfJrhQfFL449LyZyp'}
+Traceback (most recent call last):
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 759, in process_theme
+    research = await phase1_research(theme)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 468, in phase1_research
+    regs, comps, overseas = await asyncio.gather(
+                            ^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 397, in search_regulations
+        msg = await with_retry(lambda: ai.messages.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+        ), label=f"regulations/{theme[:12]}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\bizidea\scripts\generate_ideas.py", line 377, in with_retry
+    return await coro_fn()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\resources\messages\messages.py", line 2453, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<32 lines>...
+    )
+    ^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 2007, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\after\AppData\Roaming\Python\Python314\site-packages\anthropic\_base_client.py", line 1792, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.AuthenticationError: Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'message': 'invalid x-api-key'}, 'request_id': 'req_011CbPDLfJrhQfFL449LyZyp'}
+2026-05-25 20:32:26,993 [INFO] 
+============================================================
+2026-05-25 20:32:26,993 [INFO] 完了サマリー
+2026-05-25 20:32:26,993 [INFO] ============================================================
+2026-05-25 20:32:26,993 [INFO] 成功: 0/10件
+2026-05-25 20:32:26,993 [WARNING] 失敗: 10件（generate_ideas_20260525_203103.log を確認してください）

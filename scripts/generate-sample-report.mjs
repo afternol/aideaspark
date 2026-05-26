@@ -50,7 +50,7 @@ async function generateReport(keyword, group, score, momentum) {
   console.log(`Phase1: web_search 開始 (${keyword})... 対象期間: ${threeMonths}`);
 
   const phase1 = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-4-6",
     max_tokens: 4000,
     tools: [{ type: "web_search_20250305", name: "web_search" }],
     messages: [{
@@ -92,7 +92,7 @@ async function generateReport(keyword, group, score, momentum) {
   console.log(`Phase2: レポート構造化 開始...`);
 
   const phase2 = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-4-6",
     max_tokens: 4000,
     system: `あなたは日本のスタートアップ・ビジネストレンドの専門アナリストです。
 本日は${today}です。

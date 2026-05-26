@@ -46,7 +46,7 @@ export async function generateTrendReport(
 
   // ── Phase 1: web_search ──────────────────────────────────
   const phase1 = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-4-6",
     max_tokens: 4000,
     tools: [{ type: "web_search_20250305" as any, name: "web_search" }],
     messages: [{
@@ -93,7 +93,7 @@ export async function generateTrendReport(
 
   // ── Phase 2: 構造化レポート生成（引用番号付き）──────────
   const phase2 = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-4-6",
     max_tokens: 4000,
     system: `あなたは日本のスタートアップ・ビジネストレンドの専門アナリストです。
 本日は${today}です。

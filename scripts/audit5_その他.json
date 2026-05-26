@@ -1,0 +1,144 @@
+{
+  "リーガルテック": {
+    "outlook": "今後12〜18ヶ月でエージェント型AIが法務ワークフローの自律化を進め、AI利用企業とそうでない法律事務所・企業法務の生産性格差が拡大すると予想される。日本では電子契約の普及加速・コンプライアンス強化需要の増大を背景に法務AI導入が中堅・中小企業にも拡大し、大手プレイヤーの機能統合（法務OS化）が進むとみられる。",
+    "sources": [
+      {
+        "num": 1,
+        "url": "https://www.cnbc.com/2026/03/25/legal-ai-startup-harvey-raises-200-million-at-11-billion-valuation.html",
+        "title": "Harvey raises $200M at $11B valuation",
+        "publisher": "cnbc.com"
+      },
+      {
+        "num": 2,
+        "url": "https://www.bloomberg.com/news/articles/2026-03-10/legal-ai-startup-legora-raises-550-million-for-us-expansion",
+        "title": "Legora raises $550M Series D at $5.55B valuation",
+        "publisher": "bloomberg.com"
+      },
+      {
+        "num": 3,
+        "url": "https://www.artificiallawyer.com/2026/01/06/legal-tech-raised-6bn-in-2025-as-ai-boom-shows-divisions/",
+        "title": "Legal Tech Raised 6Bn in 2025 as AI Boom Shows Divisions",
+        "publisher": "artificiallawyer.com"
+      },
+      {
+        "num": 4,
+        "url": "https://prtimes.jp/main/html/rd/p/000000751.000036601.html",
+        "title": "LegalOn Technologies 有償導入社数8,000社突破",
+        "publisher": "prtimes.jp"
+      },
+      {
+        "num": 5,
+        "url": "https://prtimes.jp/main/html/rd/p/000000415.000033386.html",
+        "title": "GVA TECH 弁護士向け生成AIネイティブ契約書レビュー",
+        "publisher": "prtimes.jp"
+      },
+      {
+        "num": 6,
+        "url": "https://www.uslegalsupport.com/blog/2026-legal-tech-ai-trends/",
+        "title": "The 2026 Legal Tech & AI Outlook",
+        "publisher": "uslegalsupport.com"
+      },
+      {
+        "num": 7,
+        "url": "https://mntsq.co.jp/event/2026_vision",
+        "title": "2026年の展望 - リーガルテック市場を牽引する3つの潮流",
+        "publisher": "mntsq.co.jp"
+      },
+      {
+        "num": 8,
+        "url": "https://enterprisezine.jp/news/detail/24182",
+        "title": "LegalOn Technologies HRやセールスなど8領域に進出",
+        "publisher": "enterprisezine.jp"
+      },
+      {
+        "num": 9,
+        "url": "https://primelegalstaff.com/legal-ma-trends-q2-2026/",
+        "title": "Legal M&A Trends Q2 2026",
+        "publisher": "primelegalstaff.com"
+      },
+      {
+        "num": 10,
+        "url": "https://www.mordorintelligence.com/ja/industry-reports/global-legal-tech-market",
+        "title": "世界のリーガルテック市場規模・シェア分析",
+        "publisher": "mordorintelligence.com"
+      },
+      {
+        "num": 11,
+        "url": "https://www.artificiallawyer.com/2026/04/13/legal-tech-raised-2-3b-in-q1-26-but-3-companies-dominate/",
+        "title": "Legal Tech Raised $2.3B in Q1 2026, But Three Companies Took Most of It",
+        "publisher": "artificiallawyer.com"
+      }
+    ],
+    "summary": "2026年4月時点、リーガルテック市場はAI投資ラッシュが過熱しており、Harvey社が2026年3月に2億ドル調達（評価額110億ドル）[1]、スウェーデンのLegoraが同月5億5000万ドルを調達（評価額55.5億ドル）[2]と、わずか2週間で合計7億5000万ドルの資金調達が実現した。グローバルのリーガルテックAIソフトウェア市場は2025年の31億ドルから2030年には108億ドル（CAGR28.3%）へ成長が見込まれる[3]。日本ではLegalOn Technologiesがグローバル導入8,000社を突破[4]し、GVA TECHが弁護士向け生成AIネイティブ契約書レビューを開始[5]するなど国内プレイヤーも急速に機能拡充を進めている。",
+    "keyPlayers": [
+      "Harvey（米国）: 2026年3月に2億ドル調達、評価額110億ドル。60カ国以上・1,300以上の組織・100,000人超の弁護士に展開（60カ国以上）[1]",
+      "Legora（スウェーデン）: 2026年3月に5.5億ドル調達、評価額55.5億ドル。米国拠点を急拡大中[2]",
+      "LegalOn Technologies（日本）: グローバル導入8,000社超。CorporateOn等の新AIパッケージを展開[4][8]",
+      "GVA TECH（日本）: 弁護士向け生成AIネイティブ契約書レビューを提供開始。法務AI研究所を設立[5]",
+      "MNTSQ（日本）: 2026年の法律AI市場展望（エージェント化・統合化・コスト削減）を発信[7]"
+    ],
+    "marketSize": "グローバルリーガルテックAIソフトウェア市場は2025年に31億ドル、2030年に108億ドル（CAGR28.3%）見通し（Business Research Insights, 2026年）。グローバルリーガルテック全体市場は2026年に360億ドル（Mordor Intelligence, 2026年）[10]。日本国内の電子契約市場は2025年度に前年比22%増（295億円）、2029年度500億円超・CAGR11.3%（ITRアイ・ティ・アール調査、2025年10月）[10]",
+    "recentNews": [
+      {
+        "date": "2026年3月",
+        "detail": "GIC・Sequoia共同主導で2億ドルを調達、評価額は前回（2025年12月）の80億ドルから110億ドルへ上昇[1]。累計調達額は10億ドルに達し、法律事務所・企業法務・資産管理会社60カ国以上に展開する[1]。",
+        "headline": "Harvey、2億ドル調達で評価額110億ドルに"
+      },
+      {
+        "date": "2026年3月",
+        "detail": "スウェーデンのLegal AI企業LegoraがAccel主導で5億5000万ドルを調達、評価額は55.5億ドルとわずか5ヶ月で3倍超[2]。米国ヒューストン・シカゴへオフィス拡大、2026年末までに米国に300名超を採用予定[2]。",
+        "headline": "Legora、5.5億ドルのシリーズD調達"
+      },
+      {
+        "date": "2026年2月",
+        "detail": "LegalOn Technologiesがグローバルでの有償導入社数8,000社超を発表[4]。日本・シンガポール・米国・ドイツ・英国に展開し、CorporateOnなど新AIパッケージの提供も開始している[8]。",
+        "headline": "LegalOn、グローバル導入8,000社を突破"
+      },
+      {
+        "date": "2026年3月",
+        "detail": "GVA TECHが弁護士専用の生成AIネイティブ契約書レビューサービスを提供開始[5]。訴訟実務・契約実務の両方をカバーする体制を整え、法務AI研究所も設立した[5]。",
+        "headline": "GVA TECH、弁護士向け生成AI契約書レビュー開始"
+      },
+      {
+        "date": "2026年1月",
+        "detail": "Harveyが製品デモ・動画・ガイド作成ツールを手がけるスタートアップHexusを2026年1月に買収[3]。エージェントAIによる自律型法務ワークフローの拡充を加速させる[6]。",
+        "headline": "Harvey、Hexus買収でAI機能強化"
+      },
+      {
+        "date": "2026年3月",
+        "detail": "Legoraはシリーズ調達直後にカナダのスタートアップWalterを買収[2]。北米市場での機能統合と顧客基盤拡大を狙う[2]。",
+        "headline": "Legora、Walter（カナダ）を買収し統合"
+      },
+      {
+        "date": "2026年1月",
+        "detail": "リーガルテック全体で2025年に約60億ドル（5.99B）の投資が集まった[3]。AI系スタートアップと伝統的法律ソフト企業の二極化が鮮明になっている[3]。",
+        "headline": "法律AI市場、2025年に約60億ドルを調達"
+      },
+      {
+        "date": "2026年Q1",
+        "detail": "2026年Q2にかけ、法律AI企業同士のM&AやプラットフォームへのAI統合が加速[9]。米国法律業界では大手事務所が複数のAIツールを統合したワークスペースを採用する動きが広がる[6]。",
+        "headline": "法律M&A、AI統合による業界再編が加速"
+      },
+      {
+        "date": "2025年〜2026年",
+        "detail": "日本国内の電子契約サービス市場は2025年度も前年比22%増を見込み、CAGRは11.3%。2029年度には500億円突破の予測[10]。",
+        "headline": "電子契約市場、2025年度に22%増の高成長"
+      },
+      {
+        "date": "2026年",
+        "detail": "法律AIソフトウェア市場は2025年の31億ドルから2030年には108億ドル（CAGR28.3%）に成長する見通し[3]。企業内法務・訴訟支援・規制対応の3領域での需要が特に旺盛[6]。",
+        "headline": "リーガルAIソフト市場、2030年に108億ドルへ"
+      }
+    ],
+    "generatedAt": "2026-04-27T04:17:15.460Z",
+    "globalContext": "米国では法律AIが企業法務・訴訟支援・コンプライアンスの三大領域で急速に浸透し、上位100法律事務所の大半がHarveyなどのAIを導入済み[1]。欧州ではLegoraを筆頭にAI規制対応（EU AI Act）を追い風に企業内法務向けへの展開が加速[2]。日本への影響としては、LegalOn TechnologiesのグローバルNo.1戦略[8]やGVA TECHの弁護士向けプロダクト展開[5]など、国内プレイヤーが海外最先端の機能を国内市場に実装する形で競争が激化している。",
+    "whatIsHappening": [
+      "エージェントAI（自律型AI）がリーガルテックの主役に。単なる文書生成から、調査・契約審査・訴訟準備を自律実行するシステムへ移行中[6]",
+      "Harvey・Legoraなど法律AI特化スタートアップへのVC投資が過去最高水準。2026年Q1のリーガルテック投資総額は約23億ドル・103件[11]",
+      "日本では電子契約義務化・コンプライアンス強化を背景に法務デジタル化需要が急増。国内プレイヤーがグローバルAI機能を国内市場に実装する競争が激化している",
+      "大手法律事務所・企業法務への導入が加速。Harveyは米国上位100法律事務所の大半と取引[1]",
+      "MNTSQが2026年の3大潮流（AI自律化・統合法務OS・コスト削減）を軸に市場展望を発信[7]"
+    ],
+    "investmentTrends": "2026年Q1のリーガルテック分野への投資総額は約23億ドル（103件）に達し（Artificial Lawyer調査）、そのうちAI関連が70%超を占めた[11]。Harvey（GIC・Sequoia主導、2億ドル、2026年3月）[1]とLegora（Accel主導、5.5億ドル、2026年3月）[2]が牽引し、わずか2週間で計7.5億ドルが集中した。Benchmark・Bessemer・General Catalyst・Andreessen Horowitzなどトップティアのファンドが複数ラウンドにわたって投資を継続しており、法律AIへの長期的な確信が示されている[1][2]。"
+  }
+}

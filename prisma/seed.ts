@@ -41,7 +41,7 @@ async function main() {
       publishedAt:      idea.publishedAt,
       views:            idea.views,
       bookmarks:        idea.bookmarks,
-      inspirationSource: idea.inspirationSource ?? null,
+      inspirationSource: (idea as any).inspirationSource ?? null,
       patterns:         (idea.patterns ?? []) as any,
       whyNow:           (idea as any).whyNow ?? null,
       noveltyNote:      (idea as any).noveltyNote ?? null,
